@@ -1,6 +1,8 @@
 {
   "name": "gbac",
   "version": "0.1.0",
+  "start_url": ".",
+  "homepage": "https://pokemium.github.io/GBAC.js/",
   "private": true,
   "dependencies": {
     "@testing-library/react": "^12.1.3",
