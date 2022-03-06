@@ -1,0 +1,5 @@
+yarn.lock linguist-generated=true
+src/tailwind.css linguist-generated=true
+babel-plugin-macros.config.js linguist-vendored
+tailwind.config.js linguist-vendored
+.eslintrc.js linguist-vendored
