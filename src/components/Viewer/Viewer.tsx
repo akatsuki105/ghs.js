@@ -9,7 +9,7 @@ type Props = {
   id: string;
 };
 
-export const Tile: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
+export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
   const pixels = rgb.length / 3;
   let h = pixels / w;
   if (h % 8 != 0) {

@@ -1,34 +1,16 @@
-# react-starter
+# GBAC.js
 
-```
-Warning: Some of the files are hidden on vscode. (They do exist, though.)
-```
+GBAC.js is the web version for [RayCarrot/GBAC](https://github.com/RayCarrot/GBAC).
 
-## ✨ Features
+Currently, compression format supports LZ77 only.
 
-- React v17
-- Tailwind.css v3 + styled-components (+ twin.macro)
-- Useful atoms components
+And bitmap option supports 4bpp only.
 
-## 🚗 Run
+## Run locally
 
 ```sh
+git clone https://github.com/pokemium/GBAC.js.git
+cd ./GBAC.js
 yarn install
-yarn dev
+yarn dev # run on localhost:3000
 ```
-
-## 🔍 Check non-ascii characters
-
-```sh
-yarn ascii
-```
-
-## 📥 Update dependencies
-
-```sh
-python3 ./scripts/yarnd.py
-```
-
-## 🪛 Todo
-
-- Introduce PostCSS for Tailwind.css

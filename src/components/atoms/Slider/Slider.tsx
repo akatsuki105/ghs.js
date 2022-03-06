@@ -22,7 +22,7 @@ export const Slider: React.FC<SliderProps> = React.memo(
     );
 
     return (
-      <div className="relative pt-1">
+      <div className="relative">
         {label && (
           <label htmlFor="slider" className="form-label">
             {label}

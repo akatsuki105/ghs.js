@@ -1,3 +1,5 @@
 export * from './atoms';
-export * from './romupload';
-export * from './Tile';
+export * from './Info';
+export * from './ROMUpload';
+export * from './Viewer';
+export * from './Palette';

@@ -1,7 +1,19 @@
 import React, { useRef } from 'react';
 
+let title = '';
+
+export type Rom = {
+  title: string;
+  data: Uint8Array;
+};
+
+export const defaultRom = {
+  title: '',
+  data: new Uint8Array(0),
+};
+
 type Props = {
-  load: (data: Uint8Array) => void;
+  load: (data: Rom) => void;
 };
 
 export const ROMUpload: React.VFC<Props> = React.memo(({ load }) => {
@@ -12,19 +24,43 @@ export const ROMUpload: React.VFC<Props> = React.memo(({ load }) => {
   // @ts-ignore
   r.onloadend = () => {
     const bytes = new Uint8Array(r.result as ArrayBuffer);
-    load(bytes);
+    load({
+      title: title,
+      data: bytes,
+    });
   };
 
   const upload = () => {
     const input = document.getElementById('file-upload')! as HTMLInputElement;
     const file = input.files![0];
-    if (file.name.endsWith('.gba')) {
+    title = file.name;
+    if (title.endsWith('.gba')) {
+      r.readAsArrayBuffer(file);
+    }
+  };
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    title = file.name;
+    if (title.endsWith('.gba')) {
       r.readAsArrayBuffer(file);
     }
   };
 
   return (
-    <div className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+    <div
+      className="max-w-lg flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md"
+      onDrop={onDrop}
+      onDragOver={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+      onDragEnter={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <div className="space-y-1 text-center">
         <svg
           className="mx-auto h-12 w-12 text-gray-400 feather feather-file"
