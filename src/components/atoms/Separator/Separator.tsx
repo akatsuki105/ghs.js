@@ -25,7 +25,7 @@ export const Separator: React.FC<SeparatorProps> = React.memo(({ color, orientat
   }, [palette, boxShadow, orientation]);
 
   if (stretch) {
-    return <div style={{ alignSelf: 'stretch' }}>{Content}</div>;
+    return <div className="self-stretch">{Content}</div>;
   }
 
   return Content;

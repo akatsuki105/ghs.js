@@ -2,22 +2,17 @@
     "css.validate": false,
     "less.validate": false,
     "scss.validate": false,
+    "eslint.packageManager": "yarn",
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true,
         "source.fixAll.stylelint": true
     },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": false,
-    "editor.tabSize": 2,
-    "editor.tokenColorCustomizations": {
-        "semanticHighlighting": true
-    },
-    "editor.wordWrap": "on",
-    "eslint.enable": true,
-    "eslint.packageManager": "yarn",
+    "editor.wordWrap": "off",
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
     "npm.packageManager": "yarn",
-    "typescript.tsdk": "./node_modules/typescript/lib",
     "[markdown]": {
         "files.trimTrailingWhitespace": false
     },
@@ -28,5 +23,11 @@
         "**/CVS": true,
         "**/.DS_Store": true,
         "node_modules": true,
+        ".next": true,
+        ".eslintcache": true,
+        "tsconfig.tsbuildinfo": true,
+        "yarn.lock": true,
+        "docs": true,
+        "dist": true
     }
 }

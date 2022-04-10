@@ -33,6 +33,17 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
     }
   }, [rgb, id, w, h]);
 
+  return <ScrollableCanvas id={id} mag={mag} w={w} h={h} />;
+});
+
+type CanvasProps = {
+  id: string;
+  w: number;
+  h: number;
+  mag?: number;
+};
+
+const ScrollableCanvas: React.VFC<CanvasProps> = React.memo(({ id, w, h, mag = 1 }) => {
   return (
     <div style={{ overflow: 'scroll', width: w * mag, height: 300 }}>
       <div style={{ overflow: 'hidden', width: w * mag, height: h * mag }}>
@@ -44,6 +55,11 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
   );
 });
 
+/**
+ * Draw 8x8 tilemap image using sequential RGB arraybuffer.
+ * @param t Target 8x8 tilemap image
+ * @param buf RGB array buffer. e.g. [R00, G00, B00, R01, G01, B01, ..., R10, G10, B10, R11, G11, B11, ..., Ryx, Gyx, Byx]
+ */
 const setTileImage = (t: ImageData, buf: Uint8Array) => {
   for (let row = 0; row < 8; row++) {
     const y = row * mag;

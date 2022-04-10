@@ -21,7 +21,6 @@ export const ROMUpload: React.VFC<Props> = React.memo(({ load }) => {
 
   const r = new FileReader();
 
-  // @ts-ignore
   r.onloadend = () => {
     const bytes = new Uint8Array(r.result as ArrayBuffer);
     load({

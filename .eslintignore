@@ -7,3 +7,4 @@ public/
 **/reportWebVitals.ts
 .eslintrc.js
 **/advanced.d.ts
+vite.config.ts

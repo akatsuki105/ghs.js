@@ -6,6 +6,10 @@ const _rgb555 = (rgb: number): number => {
   return (r << 10) | (g << 5) | b;
 };
 
+/**
+ * Convert RGB888 array into RGB555 array.
+ * @param rgb888s each element is 24bit and represents a RGB888.
+ */
 export const rgb555 = (rgb888s: number[]): Uint16Array => {
   return new Uint16Array(rgb888s.map((c) => _rgb555(c)));
 };

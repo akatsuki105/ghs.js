@@ -15,9 +15,9 @@ import {
   ROMInfo,
   ImageInfo,
   ImageInfoProps,
-} from 'components';
-import { ModalsProvider } from 'contexts';
-import theme from 'theme';
+} from './components';
+import { ModalsProvider } from './contexts';
+import theme from './theme';
 import {
   convert4BppToRGB,
   convert8BppToRGB,
@@ -25,8 +25,8 @@ import {
   lookupLZ77,
   palettes,
   rgb555,
-} from 'utils';
-import 'tailwind.css';
+} from './utils';
+import './tailwind.css';
 
 const App = (): JSX.Element => {
   const [rom, setRom] = useState<Rom>(defaultRom);

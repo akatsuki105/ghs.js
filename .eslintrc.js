@@ -1,21 +1,30 @@
 /** @type {import('@typescript-eslint/experimental-utils').TSESLint.Linter.Config} */
 module.exports = {
+    // プログラムの実行環境をESLintに教える
     env: {
         browser: true,
         es2020: true,
     },
+
+    // 共有設定を適用する。共有設定はESLintに標準で含まれているものか別途インストールしたもの、またはインストール済みのプラグインのパッケージに含まれているものを指定する
+    // 共有設定: 複数のルールの適用をまとめて設定するもの
     extends: [
         'plugin:react/recommended',
         'airbnb/hooks',
         'plugin:import/errors',
         'plugin:import/warnings',
         'plugin:import/typescript',
+        'plugin:@typescript-eslint/eslint-recommended',
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:prettier/recommended',
         'prettier',
     ],
+
+    // ESLintが使用するパーサを指定する
     parser: '@typescript-eslint/parser',
+
+    // パーサの各種実行オプションを設定する
     parserOptions: {
         ecmaFeatures: {
             jsx: true,
@@ -25,6 +34,10 @@ module.exports = {
         sourceType: 'module',
         tsconfigRootDir: __dirname,
     },
+
+    // 任意のプラグインを読み込む
+    // プラグイン: ESLintの組み込みルール以外に独自のルールを追加するもの
+    // プラグインは読み込んだだけではなんの効力も持たず、extendsかrulesで設定する必要がある
     plugins: [
         '@typescript-eslint',
         'import',
@@ -35,7 +48,11 @@ module.exports = {
         'react',
         'react-hooks',
     ],
+
     root: true,
+
+    // 適用する個別のルールと、エラーレベルや例外などその設定値を記述する
+    // 基本的にはextendsで適用した共有設定が読み込まれているので、そのうちのいくつかを個別で無効にしたいときに設定する
     rules: {
         'lines-between-class-members': [
             'error',
@@ -44,8 +61,6 @@ module.exports = {
                 exceptAfterSingleLine: true,
             },
         ],
-        // should be rewritten as `['error', { allowAsStatement: true }]` in ESLint 7 or later
-        // SEE: https://github.com/typescript-eslint/typescript-eslint/issues/1184
         'no-void': 'off',
         'padding-line-between-statements': [
             'error',
@@ -118,9 +133,7 @@ module.exports = {
         '@typescript-eslint/restrict-template-expressions': 0,
         'react/jsx-props-no-spreading': 0,
         '@typescript-eslint/explicit-module-boundary-types': 0,
-        '@typescript-eslint/no-floating-promises': 0,
-        '@typescript-eslint/ban-ts-comment': 0,
-        '@typescript-eslint/no-unused-vars': 'warn'
+        '@typescript-eslint/no-non-null-assertion': 0
     },
     overrides: [
         {
@@ -135,6 +148,9 @@ module.exports = {
             node: {
                 paths: ['src'],
             },
+        },
+        "react": {
+            "version": "detect"
         }
     },
 };

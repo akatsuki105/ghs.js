@@ -9,7 +9,7 @@ type Props = {
 export const ROMInfo: React.VFC<Props> = React.memo(({ rom }) => {
   return (
     <Container>
-      <div className={`text-lg font-medium`}>ROM Info</div>
+      <div className="text-lg font-medium">ROM Info</div>
       <StyledDiv>Title: {rom.title}</StyledDiv>
     </Container>
   );

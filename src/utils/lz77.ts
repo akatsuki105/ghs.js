@@ -1,12 +1,19 @@
-export const lookupLZ77 = (data: Uint8Array): number[][] => {
+/** `[addr, compressed_data_size, decompressed_data_size]` */
+type LZ77 = number[];
+
+/**
+ * Analysis GBA rom and look up LZ77 compressed data.
+ * @returns Array of `[addr, compressed_data_size, decompressed_data_size]`
+ */
+export const lookupLZ77 = (gbaRomData: Uint8Array): LZ77[] => {
   const result = [];
-  for (let i = 0; i < data.byteLength; i += 4) {
-    const id = data[i];
+  for (let i = 0; i < gbaRomData.byteLength; i += 4) {
+    const id = gbaRomData[i];
     if (id === 0x10) {
-      const size = data[i + 1] | (data[i + 2] << 8) | (data[i + 3] << 16);
+      const size = gbaRomData[i + 1] | (gbaRomData[i + 2] << 8) | (gbaRomData[i + 3] << 16);
       if (256 < size && size < 0xffff) {
         try {
-          const [_, compressed_size] = decompressLZ77(data, i);
+          const [_, compressed_size] = decompressLZ77(gbaRomData, i);
           result.push([i, compressed_size, size]);
         } catch (e) {}
       }
@@ -16,6 +23,12 @@ export const lookupLZ77 = (data: Uint8Array): number[][] => {
   return result;
 };
 
+/**
+ * Decompresse LZ77 compressed data.
+ * @param data Original binary. Normally, this is GBA ROM data
+ * @param addr Offset for compressed data in `data`
+ * @returns `[decompressed_data_binary, compressed_data_size]`
+ */
 export const decompressLZ77 = (data: Uint8Array, addr: number): [Uint8Array, number] => {
   const oldAddr = addr;
   const id = data[addr++];
