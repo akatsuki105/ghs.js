@@ -1,12 +1,11 @@
-/** `[addr, compressed_data_size, decompressed_data_size]` */
-type LZ77 = number[];
+import { DataInfo } from './helper';
 
 /**
  * Analysis GBA rom and look up LZ77 compressed data.
  * @returns Array of `[addr, compressed_data_size, decompressed_data_size]`
  */
-export const lookupLZ77 = (gbaRomData: Uint8Array): LZ77[] => {
-  const result = [];
+export const lookupLZ77 = (gbaRomData: Uint8Array): DataInfo[] => {
+  const result: DataInfo[] = [];
   for (let i = 0; i < gbaRomData.byteLength; i += 4) {
     const id = gbaRomData[i];
     if (id === 0x10) {

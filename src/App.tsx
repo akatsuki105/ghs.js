@@ -27,6 +27,7 @@ import {
   rgb555,
 } from './utils';
 import './tailwind.css';
+import { DataInfo } from 'utils/helper';
 
 const App = (): JSX.Element => {
   const [rom, setRom] = useState<Rom>(defaultRom);
@@ -34,7 +35,7 @@ const App = (): JSX.Element => {
   const [width, setWidth] = useState<number>(2);
   const [bpp, setBpp] = useState<number>(4);
 
-  const [rows, setRows] = useState<number[][]>([]);
+  const [rows, setRows] = useState<DataInfo[]>([]);
   const [info, setInfo] = useState<ImageInfoProps | null>(null);
 
   const [pal, setPal] = useState<number>(0);
@@ -66,6 +67,7 @@ const App = (): JSX.Element => {
                 load={(r: Rom) => {
                   setRom(r);
                   setRows(lookupLZ77(r.data));
+                  // setRows(lookupRLE(r.data));
                 }}
               />
             </>
@@ -136,6 +138,7 @@ const App = (): JSX.Element => {
                                     });
                                     const pal555 = rgb555(palettes[pal]);
                                     const [decompressed] = decompressLZ77(rom.data, r[0]);
+                                    // const [decompressed] = decompressRLE(rom.data, r[0]);
                                     const buf =
                                       bpp === 4
                                         ? convert4BppToRGB(decompressed, pal555)
