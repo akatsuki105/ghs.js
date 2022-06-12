@@ -22,7 +22,7 @@ const App = (): JSX.Element => {
           <Routes>
             <Route path="/GBAC.js/bpp" element={<Bpp />} />
             <Route path="/GBAC.js/lz77" element={<LZ77 />} />
-            <Route path="*" element={<Navigate to="/GBAC.js/bpp" replace />} />
+            <Route path="*" element={<Navigate to="/GBAC.js/lz77" replace />} />
           </Routes>
         </Page>
       </div>

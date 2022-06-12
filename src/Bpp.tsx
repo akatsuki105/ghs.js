@@ -8,11 +8,7 @@ export const Bpp: React.VFC = React.memo(() => {
 
   return (
     <>
-      {rgb.length > 0 ? (
-        <Viewer id="canvas" w={width * 8} rgb={rgb.slice(rgb.length - 0x100000, rgb.length - 1)} />
-      ) : (
-        <Box height={300} />
-      )}
+      {rgb.length > 0 ? <Viewer id="canvas" w={width * 8} rgb={rgb} /> : <Box height={300} />}
 
       <Spacer size="sm" />
       <Separator />
@@ -24,7 +20,6 @@ export const Bpp: React.VFC = React.memo(() => {
           <ROMUpload
             load={(r: Rom) => {
               const romRgb = convert4BppToRGB(r.data, rgb555(palettes[0]));
-              console.log(romRgb.length);
               setRgb(romRgb);
             }}
           />
