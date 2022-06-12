@@ -1,34 +1,37 @@
-import React, { useContext } from 'react';
-import styled, { ThemeContext } from 'styled-components';
+import React from 'react';
+import theme from '../../../theme';
 
-interface SpacerProps {
-  size?: 'sm' | 'md' | 'lg';
-}
+type Size = keyof typeof sizes;
 
-export const Spacer: React.FC<SpacerProps> = React.memo(({ size = 'md' }) => {
-  const { spacing } = useContext(ThemeContext);
+const sizes = {
+  sm: theme.spacing[2],
+  md: theme.spacing[4],
+  lg: theme.spacing[6],
+  xl: theme.spacing[8],
+} as const;
 
-  let s: number;
-  switch (size) {
-    case 'lg':
-      s = spacing[6];
-      break;
-    case 'sm':
-      s = spacing[2];
-      break;
-    case 'md':
-    default:
-      s = spacing[4];
-  }
+type Props = {
+  className?: string;
+  axis?: 'vertical' | 'horizontal';
+  size?: Size;
+};
 
-  return <StyledSpacer size={s} />;
-});
+// https://www.joshwcomeau.com/react/modern-spacer-gif/
+export const Spacer: React.VFC<Props> = ({ size = 'md', axis, className = '', ...delegated }) => {
+  const width = axis === 'vertical' ? 1 : sizes[size];
+  const height = axis === 'horizontal' ? 1 : sizes[size];
 
-interface StyledSpacerProps {
-  size: number;
-}
-
-const StyledSpacer = styled.div<StyledSpacerProps>`
-  height: ${(props) => props.size}px;
-  width: ${(props) => props.size}px;
-`;
+  return (
+    <span
+      className={className}
+      style={{
+        display: 'block',
+        width,
+        minWidth: width,
+        height,
+        minHeight: height,
+      }}
+      {...delegated}
+    />
+  );
+};

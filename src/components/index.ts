@@ -3,3 +3,4 @@ export * from './Info';
 export * from './ROMUpload';
 export * from './Viewer';
 export * from './Palette';
+export * from './Header';
