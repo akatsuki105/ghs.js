@@ -16,13 +16,13 @@ export type Props = {
   mag?: number;
 };
 
-export const ScrollableCanvas: React.VFC<Props> = React.memo(
-  ({ id, w, h, visibleW, visibleH, mag = 1 }) => {
+export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
+  ({ id, w, h, visibleW, visibleH, mag = 1 }, ref) => {
     return (
       <div style={{ overflow: 'scroll', width: visibleW * mag, height: visibleH }}>
         <div style={{ overflow: 'hidden', width: w * mag, height: h * mag }}>
           <StyledDiv h={h * mag}>
-            <StyledCanvas id={id} width={w * mag} height={h * mag}></StyledCanvas>
+            <StyledCanvas id={id} width={w * mag} height={h * mag} ref={ref}></StyledCanvas>
           </StyledDiv>
         </div>
       </div>

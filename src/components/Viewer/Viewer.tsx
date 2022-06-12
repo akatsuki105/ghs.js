@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { RGB } from '../../utils';
 import { ScrollableCanvas } from '../atoms/ScrollableCanvas';
 
@@ -11,6 +11,8 @@ type Props = {
 };
 
 export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
+  const canvas = useRef<HTMLCanvasElement>(null);
+
   const pixels = rgb.length;
   let h = pixels / w;
   if (h % 8 != 0) {
@@ -18,8 +20,8 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
   }
 
   useEffect(() => {
-    const canvas = document.getElementById(id)! as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d', { alpha: false })!;
+    if (!canvas || !canvas.current) return;
+    const ctx = canvas.current.getContext('2d', { alpha: false })!;
     ctx.fillRect(0, 0, w, h);
     const tileYMax = h / 8;
     const tileXMax = w / 8;
@@ -34,7 +36,9 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
     }
   }, [rgb, id, w, h]);
 
-  return <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={300} />;
+  return (
+    <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={300} ref={canvas} />
+  );
 });
 
 /**
