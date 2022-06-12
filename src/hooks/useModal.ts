@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { Context } from 'contexts/Modals';
+import { Context } from '../contexts/Modals';
 
 export const useModal = (
   modal: React.ReactNode,

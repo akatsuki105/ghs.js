@@ -3,21 +3,29 @@ import { RGB } from '../../utils';
 import { ScrollableCanvas } from '../atoms/ScrollableCanvas';
 import { setTileImage } from './helper';
 
-const mag = 4;
-
 type Props = {
   rgb: RGB[];
   w: number;
+  visible: Dimension;
   id: string;
+  mag?: number;
 };
 
-export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
+type Dimension = {
+  w: number;
+  h: number;
+};
+
+export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, visible, id, mag = 4 }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const pixels = rgb.length;
   let h = pixels / w;
   if (h % 8 != 0) {
     h += 8 - (h % 8);
+  }
+  if (h * mag > 32768) {
+    h = 32768 / mag;
   }
 
   useEffect(() => {
@@ -35,9 +43,17 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
         ctx.putImageData(tile, tileX * 8 * mag, tileY * 8 * mag);
       }
     }
-  }, [rgb, id, w, h]);
+  }, [rgb, id, w, visible, h, mag]);
 
   return (
-    <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={300} ref={canvas} />
+    <ScrollableCanvas
+      id={id}
+      mag={mag}
+      w={w}
+      h={h}
+      visibleW={visible.w}
+      visibleH={visible.h}
+      ref={canvas}
+    />
   );
 });

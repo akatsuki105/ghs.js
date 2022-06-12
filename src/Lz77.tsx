@@ -39,7 +39,11 @@ export const LZ77: React.VFC = React.memo(() => {
 
   return (
     <>
-      {rgb.length > 0 ? <Viewer id="canvas" w={width * 8} rgb={rgb} /> : <Box height={300} />}
+      {rgb.length > 0 ? (
+        <Viewer id="canvas" w={width * 8} visible={{ w: width * 8, h: 300 }} rgb={rgb} />
+      ) : (
+        <Box height={300} />
+      )}
 
       <Spacer size="sm" />
       <Separator />

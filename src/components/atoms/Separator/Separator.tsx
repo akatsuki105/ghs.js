@@ -7,22 +7,22 @@ type SeparatorColor = 'grey' | 'blue' | 'green' | 'red';
 
 interface SeparatorProps {
   color?: SeparatorColor;
-  orientation?: SeparatorOrientation;
+  axis?: SeparatorOrientation;
   stretch?: boolean;
 }
 
-export const Separator: React.FC<SeparatorProps> = React.memo(({ color, orientation, stretch }) => {
+export const Separator: React.FC<SeparatorProps> = React.memo(({ color, axis, stretch }) => {
   const theme = useContext(ThemeContext);
   const palette = color ? theme.color[color] : theme.color.grey;
 
   let boxShadow = `0 -1px 0px ${palette[300]}`;
-  if (orientation === 'vertical') {
+  if (axis === 'vertical') {
     boxShadow = `-1px 0px 0px ${palette[300]}ff`;
   }
 
   const Content = useMemo(() => {
-    return <StyledSeparator color={palette[100]} boxShadow={boxShadow} orientation={orientation} />;
-  }, [palette, boxShadow, orientation]);
+    return <StyledSeparator color={palette[100]} boxShadow={boxShadow} axis={axis} />;
+  }, [palette, boxShadow, axis]);
 
   if (stretch) {
     return <div className="self-stretch">{Content}</div>;
@@ -34,12 +34,12 @@ export const Separator: React.FC<SeparatorProps> = React.memo(({ color, orientat
 interface StyledSeparatorProps {
   color: string;
   boxShadow: string;
-  orientation?: SeparatorOrientation;
+  axis?: SeparatorOrientation;
 }
 
 const StyledSeparator = styled.div<StyledSeparatorProps>`
   background-color: ${(props) => props.color};
   box-shadow: ${(props) => props.boxShadow};
-  height: ${(props) => (props.orientation === 'vertical' ? '100%' : '1px')};
-  width: ${(props) => (props.orientation === 'vertical' ? '1px' : '100%')};
+  height: ${(props) => (props.axis === 'vertical' ? '100%' : '1px')};
+  width: ${(props) => (props.axis === 'vertical' ? '1px' : '100%')};
 `;
