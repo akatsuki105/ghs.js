@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 import { RGB } from '../../utils';
+import { ScrollableCanvas } from '../atoms/ScrollableCanvas';
 
 const mag = 4;
 
@@ -34,26 +34,7 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
     }
   }, [rgb, id, w, h]);
 
-  return <ScrollableCanvas id={id} mag={mag} w={w} h={h} />;
-});
-
-type CanvasProps = {
-  id: string;
-  w: number;
-  h: number;
-  mag?: number;
-};
-
-const ScrollableCanvas: React.VFC<CanvasProps> = React.memo(({ id, w, h, mag = 1 }) => {
-  return (
-    <div style={{ overflow: 'scroll', width: w * mag, height: 300 }}>
-      <div style={{ overflow: 'hidden', width: w * mag, height: h * mag }}>
-        <StyledDiv h={h * mag}>
-          <StyledCanvas id={id} width={w * mag} height={h * mag}></StyledCanvas>
-        </StyledDiv>
-      </div>
-    </div>
-  );
+  return <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={300} />;
 });
 
 /**
@@ -88,12 +69,3 @@ const setTileImage = (t: ImageData, rgbs: RGB[]) => {
     }
   }
 };
-
-const StyledDiv = styled.div<{ h: number }>`
-  position: relative;
-`;
-
-const StyledCanvas = styled.canvas`
-  image-rendering: pixelated;
-  position: absolute;
-`;
