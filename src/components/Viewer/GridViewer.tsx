@@ -11,7 +11,7 @@ type Props = {
   id: string;
 };
 
-export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
+export const GridViewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
   const canvas = useRef<HTMLCanvasElement>(null);
 
   const pixels = rgb.length;
@@ -38,6 +38,6 @@ export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, id }) => {
   }, [rgb, id, w, h]);
 
   return (
-    <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={300} ref={canvas} />
+    <ScrollableCanvas id={id} mag={mag} w={w} h={h} visibleW={w} visibleH={500} ref={canvas} />
   );
 });
