@@ -1,22 +1,12 @@
 import { throttle } from 'lodash-es';
 import React, { useEffect, useRef } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-const ScrollContainer = styled.div<{ noScrollBar: boolean; width: number; height: number }>`
+const ScrollContainer = styled.div<{ width: number; height: number }>`
   width: ${({ width }) => width}px;
   height: ${({ height }) => height}px;
   overflow: auto;
   overflow-y: scroll;
-  ${({ noScrollBar }) =>
-    noScrollBar
-      ? css`
-          -ms-overflow-style: none; /* for IE, Edge */
-          scrollbar-width: none; /* for Firefox */
-          ::-webkit-scrollbar {
-            display: none; /* for Chrome, Safari */
-          }
-        `
-      : ``}
 `;
 
 const StyledDiv = styled.div`
@@ -30,22 +20,12 @@ type Props = {
   largeWidth: number;
   largeHeight: number;
   wait?: number;
-  noScrollBar?: boolean;
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
   children: React.ReactNode;
 };
 
 export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
-  ({
-    width,
-    height,
-    largeWidth,
-    largeHeight,
-    wait = 10,
-    noScrollBar = false,
-    onScroll,
-    children,
-  }) => {
+  ({ width, height, largeWidth, largeHeight, wait = 10, onScroll, children }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const _onScroll = throttle(() => {
@@ -70,7 +50,7 @@ export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
     }, [ref, _onScroll]);
 
     return (
-      <ScrollContainer noScrollBar={noScrollBar} width={width} height={height} ref={ref}>
+      <ScrollContainer width={width} height={height} ref={ref}>
         <div style={{ overflow: 'hidden', width: largeWidth, height: largeHeight }}>
           <StyledDiv>{children}</StyledDiv>
         </div>
