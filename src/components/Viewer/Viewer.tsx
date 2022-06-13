@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { RGB } from '../../utils';
-import { ScrollableCanvas } from '../atoms/ScrollableCanvas';
+import { ScrollableCanvas } from '../atoms/Canvas';
 import { setTileImage } from './helper';
 
 type Props = {
@@ -16,43 +16,46 @@ type Dimension = {
   h: number;
 };
 
-export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, visible, id, mag = 4 }) => {
-  const canvas = useRef<HTMLCanvasElement>(null);
+export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, visible, mag = 4 }) => {
+  const allCanvasSize = [w * mag, (rgb.length * mag) / w];
+  const visibleSize = [w * mag, visible.h];
+  const grid = 8 * mag;
 
-  const pixels = rgb.length;
-  let h = pixels / w;
-  if (h % 8 != 0) {
-    h += 8 - (h % 8);
-  }
-  if (h * mag > 32768) {
-    h = 32768 / mag;
-  }
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const [start, setStart] = useState<[number, number]>([0, 0]); // tile x, y
 
   useEffect(() => {
     if (!canvas || !canvas.current) return;
     const ctx = canvas.current.getContext('2d', { alpha: false })!;
-    ctx.fillRect(0, 0, w, h);
-    const tileYMax = h / 8;
-    const tileXMax = w / 8;
-    for (let tileY = 0; tileY < tileYMax; tileY++) {
-      for (let tileX = 0; tileX < tileXMax; tileX++) {
-        const tile = ctx.createImageData(8 * mag, 8 * mag);
+    ctx.fillRect(0, 0, visibleSize[0], visibleSize[1]);
+    const tileYMax = visibleSize[1] / grid;
+    const tileXMax = visibleSize[0] / grid;
+
+    for (let y = 0; y < tileYMax; y++) {
+      for (let x = 0; x < tileXMax; x++) {
+        const [tileX, tileY] = [start[0] + x, start[1] + y];
+        const tile = ctx.createImageData(grid, grid);
         const ofs = (tileY * tileXMax + tileX) * 64;
         const data = rgb.slice(ofs, ofs + 64); // 8x8
         setTileImage(tile, data, mag);
-        ctx.putImageData(tile, tileX * 8 * mag, tileY * 8 * mag);
+        ctx.putImageData(tile, x * grid, y * grid);
       }
     }
-  }, [rgb, id, w, visible, h, mag]);
+  }, [rgb, w, visible, mag, start[0], start[1]]); // eslint-disable-line
+
+  const onScroll = (top: number, left: number, setScroll: (y: number, x: number) => void) => {
+    const [tileX, tileY] = [Math.floor(left / grid), Math.floor(top / grid)];
+    setScroll(tileY * grid, tileX * grid);
+    setStart([tileX, tileY]);
+  };
 
   return (
     <ScrollableCanvas
-      id={id}
-      mag={mag}
-      w={w}
-      h={h}
-      visibleW={visible.w}
-      visibleH={visible.h}
+      width={visibleSize[0]}
+      height={visibleSize[1]}
+      largeWidth={allCanvasSize[0]}
+      largeHeight={allCanvasSize[1]}
+      onScroll={onScroll}
       ref={canvas}
     />
   );
