@@ -19,7 +19,7 @@ export const setTileImage = (t: ImageData, rgbs: RGB[], mag = 1) => {
         const a = 0xff;
         for (let py = 0; py < mag; py++) {
           for (let px = 0; px < mag; px++) {
-            const imageOffset = ((y + py) * 32 + x + px) * 4;
+            const imageOffset = ((y + py) * (8 * mag) + x + px) * 4;
             t.data[imageOffset] = r;
             t.data[imageOffset + 1] = g;
             t.data[imageOffset + 2] = b;

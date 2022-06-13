@@ -13,6 +13,8 @@ export const Canvas = React.forwardRef<HTMLCanvasElement, Props>(
   ({ top = 0, left = 0, width = 500, height = 500, translateX = 0, translateY = 0 }, ref) => {
     return (
       <canvas
+        width={width}
+        height={height}
         style={{
           top: `${top}px`,
           left: `${left}px`,
