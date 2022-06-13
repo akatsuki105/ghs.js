@@ -22,6 +22,7 @@ export const Canvas = React.forwardRef<HTMLCanvasElement, Props>(
           position: 'absolute',
           outline: 'none',
           overflow: 'hidden',
+          imageRendering: 'pixelated',
         }}
         ref={ref}
       />

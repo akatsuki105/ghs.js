@@ -13,13 +13,7 @@ export const Bpp: React.VFC = React.memo(() => {
   return (
     <FlexBox>
       {rgb.length > 0 ? (
-        <TileViewer
-          id="canvas"
-          w={width * 8}
-          visible={{ w: width * 8, h: canvasHeight }}
-          rgb={rgb}
-          mag={4}
-        />
+        <TileViewer id="canvas" w={width * 8} h={300} rgb={rgb} mag={4} />
       ) : (
         <Box height={canvasHeight} />
       )}
