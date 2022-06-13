@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { RGB } from '../../utils';
-import { ScrollableCanvas } from '../atoms/Canvas';
+import { ScrollableCanvas } from '../atoms';
 import { setTileImage } from './helper';
 
 type Props = {
@@ -16,7 +16,7 @@ type Dimension = {
   h: number;
 };
 
-export const Viewer: React.VFC<Props> = React.memo(({ rgb, w, visible, mag = 4 }) => {
+export const TileViewer: React.VFC<Props> = React.memo(({ rgb, w, visible, mag = 4 }) => {
   const allCanvasSize = [w * mag, (rgb.length * mag) / w];
   const visibleSize = [w * mag, visible.h];
   const grid = 8 * mag;

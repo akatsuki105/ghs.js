@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {
   Separator,
   Spacer,
-  Viewer,
+  TileViewer,
   Slider,
   Palette,
   FlexBox,
@@ -40,7 +40,7 @@ export const LZ77: React.VFC = React.memo(() => {
   return (
     <>
       {rgb.length > 0 ? (
-        <Viewer id="canvas" w={width * 8} visible={{ w: width * 8, h: 300 }} rgb={rgb} />
+        <TileViewer id="canvas" w={width * 8} visible={{ w: width * 8, h: 300 }} rgb={rgb} />
       ) : (
         <Box height={300} />
       )}

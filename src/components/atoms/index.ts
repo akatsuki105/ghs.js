@@ -9,3 +9,4 @@ export * from './Page';
 export * from './Separator';
 export * from './Spacer';
 export * from './Slider';
+export * from './ScrollableCanvas';

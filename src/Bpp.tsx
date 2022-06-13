@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Separator, Spacer, ROMUpload, Box, Rom, FlexBox, Viewer } from './components';
+import { Separator, Spacer, ROMUpload, Box, Rom, FlexBox, TileViewer } from './components';
 import { useWindowDimensions } from './hooks';
 import { convert4BppToRGB, palettes, RGB, rgb555 } from './utils';
 
@@ -13,7 +13,7 @@ export const Bpp: React.VFC = React.memo(() => {
   return (
     <FlexBox>
       {rgb.length > 0 ? (
-        <Viewer
+        <TileViewer
           id="canvas"
           w={width * 8}
           visible={{ w: width * 8, h: canvasHeight }}
