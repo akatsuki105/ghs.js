@@ -8,6 +8,7 @@ type Props = {
   largeWidth: number;
   largeHeight: number;
   wait?: number;
+  className?: string;
   onScroll?: (
     scrollTop: number,
     scrollLeft: number,
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
-  ({ width, height, largeWidth, largeHeight, wait = 10, onScroll }, ref) => {
+  ({ width, height, largeWidth, largeHeight, wait = 10, className, onScroll }, ref) => {
     const [scrollTop, setScrollTop] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
 
@@ -41,6 +42,7 @@ export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
         height={height}
         largeWidth={largeWidth}
         largeHeight={largeHeight}
+        className={className}
       >
         <Canvas
           ref={ref}

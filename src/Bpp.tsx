@@ -8,33 +8,40 @@ export const Bpp: React.VFC = React.memo(() => {
   const [width, _] = useState<number>(16);
   const { height } = useWindowDimensions();
 
-  const canvasHeight = (height * 9) / 10;
+  const scale = 4;
+  const canvasHeight = ((height * 9) / 10) & ~(8 * scale - 1);
 
   return (
-    <FlexBox>
-      {rgb.length > 0 ? (
-        <TileViewer w={width * 8} h={500} rgb={rgb} scale={4} grid />
-      ) : (
-        <Box height={canvasHeight} />
-      )}
+    <FlexBox className="w-full">
+      <div className="w-1/2">
+        {rgb.length > 0 ? (
+          <div className="flex justify-center">
+            <TileViewer w={width * 8} h={canvasHeight} rgb={rgb} scale={scale} grid />
+          </div>
+        ) : (
+          <Box height={canvasHeight} />
+        )}
+      </div>
 
       <Spacer size="sm" />
       <Separator axis="vertical" stretch />
       <Spacer size="sm" />
 
-      {rgb.length === 0 ? (
-        <>
-          <Spacer size="sm" />
-          <ROMUpload
-            load={(r: Rom) => {
-              const romRgb = convert4BppToRGB(r.data, rgb555(palettes[0]));
-              setRgb(romRgb);
-            }}
-          />
-        </>
-      ) : (
-        <div>hoge</div>
-      )}
+      <div className="w-1/2">
+        {rgb.length === 0 ? (
+          <>
+            <Spacer size="sm" />
+            <ROMUpload
+              load={(r: Rom) => {
+                const romRgb = convert4BppToRGB(r.data, rgb555(palettes[0]));
+                setRgb(romRgb);
+              }}
+            />
+          </>
+        ) : (
+          <div>hoge</div>
+        )}
+      </div>
     </FlexBox>
   );
 });

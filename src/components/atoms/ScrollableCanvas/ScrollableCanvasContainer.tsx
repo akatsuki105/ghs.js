@@ -21,11 +21,12 @@ type Props = {
   largeHeight: number;
   wait?: number;
   onScroll?: (scrollTop: number, scrollLeft: number) => void;
+  className?: string;
   children: React.ReactNode;
 };
 
 export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
-  ({ width, height, largeWidth, largeHeight, wait = 10, onScroll, children }) => {
+  ({ width, height, largeWidth, largeHeight, wait = 10, onScroll, className, children }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const _onScroll = throttle(() => {
@@ -50,7 +51,7 @@ export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
     }, [ref, _onScroll]);
 
     return (
-      <ScrollContainer width={width} height={height} ref={ref}>
+      <ScrollContainer width={width} height={height} ref={ref} className={className}>
         <div style={{ overflow: 'hidden', width: largeWidth, height: largeHeight }}>
           <StyledDiv>{children}</StyledDiv>
         </div>

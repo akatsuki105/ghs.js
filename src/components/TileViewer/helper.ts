@@ -40,18 +40,18 @@ export const setRGB = (t: ImageData, w: number, x: number, y: number, rgb: RGB) 
   t.data[ofs + 3] = 0xff;
 };
 
-export const writeBorder = (t: ImageData) => {
-  const c: RGB = [0x7f, 0x7f, 0x7f];
-
+export const writeBorder = (t: ImageData, c: RGB) => {
   for (let y = 0; y < t.height; y++) {
     for (let x = 0; x < t.width; x++) {
       switch (y) {
         case 0:
-          setRGB(t, t.width, x, y, c);
+          setRGB(t, t.width, x, 0, c);
+          break;
       }
       switch (x) {
         case 0:
           setRGB(t, t.width, x, y, c);
+          break;
       }
     }
   }
