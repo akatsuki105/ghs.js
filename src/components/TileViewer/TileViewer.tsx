@@ -10,10 +10,11 @@ type Props = {
   grid?: boolean;
   scale?: number;
   className?: string;
+  onScroll?: (xTile: number, yTile: number) => void;
 };
 
 export const TileViewer: React.VFC<Props> = React.memo(
-  ({ rgb, w, h, grid = false, scale = 1, className }) => {
+  ({ rgb, w, h, grid = false, scale = 1, onScroll, className }) => {
     const canvas = useRef<HTMLCanvasElement>(null);
     const canvasWidth = w * scale;
     const [start, setStart] = useState<[number, number]>([0, 0]); // tile x, y on canvas visible left top
@@ -53,12 +54,13 @@ export const TileViewer: React.VFC<Props> = React.memo(
         }
       };
       refreshCanvas();
-  }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
+    }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
-    const onScroll = (x: number, y: number, setScroll: (x: number, y: number) => void) => {
+    const _onScroll = (x: number, y: number, setScroll: (x: number, y: number) => void) => {
       const [tileX, tileY] = [Math.floor(x / gridSize), Math.floor(y / gridSize)];
       setScroll(tileX * gridSize, tileY * gridSize);
       setStart([tileX, tileY]);
+      onScroll && onScroll(tileX, tileY);
     };
 
     return (
@@ -67,7 +69,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
         height={visibleHeight}
         largeWidth={canvasWidth}
         largeHeight={canvasHeight}
-        onScroll={onScroll}
+        onScroll={_onScroll}
         ref={canvas}
         className={className}
       />
