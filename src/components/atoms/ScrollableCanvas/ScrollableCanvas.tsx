@@ -9,28 +9,24 @@ type Props = {
   largeHeight: number;
   wait?: number;
   className?: string;
-  onScroll?: (
-    scrollTop: number,
-    scrollLeft: number,
-    setScroll: (top: number, left: number) => void,
-  ) => void;
+  onScroll?: (x: number, y: number, setScroll: (x: number, y: number) => void) => void;
 };
 
 export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
   ({ width, height, largeWidth, largeHeight, wait = 10, className, onScroll }, ref) => {
-    const [scrollTop, setScrollTop] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    const [scrollX, setScrollX] = useState(0);
+    const [scrollY, setScrollY] = useState(0);
 
-    const _onScroll = (scrollTop: number, scrollLeft: number) => {
-      setScrollTop(scrollTop);
-      setScrollLeft(scrollLeft);
+    const _onScroll = (x: number, y: number) => {
+      setScrollX(x);
+      setScrollY(y);
 
       if (onScroll) {
-        const callback = (y: number, x: number) => {
-          setScrollTop(y);
-          setScrollLeft(x);
+        const callback = (x: number, y: number) => {
+          setScrollX(x);
+          setScrollY(y);
         };
-        onScroll(scrollTop, scrollLeft, callback);
+        onScroll(x, y, callback);
       }
     };
 
@@ -44,13 +40,7 @@ export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
         largeHeight={largeHeight}
         className={className}
       >
-        <Canvas
-          ref={ref}
-          width={width}
-          height={height}
-          translateX={scrollLeft}
-          translateY={scrollTop}
-        />
+        <Canvas ref={ref} width={width} height={height} translateX={scrollX} translateY={scrollY} />
       </ScrollableCanvasContainer>
     );
   },
