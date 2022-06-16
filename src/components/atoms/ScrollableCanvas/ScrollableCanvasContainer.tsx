@@ -20,7 +20,7 @@ type Props = {
   largeWidth: number;
   largeHeight: number;
   wait?: number;
-  onScroll?: (x: number, y: number) => [number, number];
+  onScroll?: (x: number, y: number) => void;
   className?: string;
   children: React.ReactNode;
 };
@@ -34,8 +34,7 @@ export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
         return;
       }
       const { scrollTop, scrollLeft } = ref.current;
-      const [newX, newY] = onScroll(scrollLeft, scrollTop);
-      ref.current.scrollTo(newX, newY);
+      onScroll(scrollLeft, scrollTop);
     }, wait);
 
     useEffect(() => {

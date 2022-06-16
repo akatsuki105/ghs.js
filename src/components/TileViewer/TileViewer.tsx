@@ -56,7 +56,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
       refreshCanvas();
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
-    const _onScroll = (x: number, y: number): [number, number] => {
+    const _onScroll = (x: number, y: number) => {
       if (start[1] * gridSize > y) {
         // up
         const [tileX, tileY] = [Math.floor(x / gridSize), Math.floor(y / gridSize)];
@@ -74,8 +74,6 @@ export const TileViewer: React.VFC<Props> = React.memo(
         setStart([tileX, tileY]);
         onScroll && onScroll(tileX, tileY);
       }
-
-      return [tileX * gridSize, tileY * gridSize];
     };
 
     return (
