@@ -40,7 +40,7 @@ export const LZ77: React.VFC = React.memo(() => {
   return (
     <>
       {rgb.length > 0 ? (
-        <TileViewer id="canvas" w={width * 8} h={304} rgb={rgb} />
+        <TileViewer w={width * 8} h={304} rgb={rgb} scale={4} grid />
       ) : (
         <Box height={304} />
       )}

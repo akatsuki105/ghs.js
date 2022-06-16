@@ -13,21 +13,45 @@ export const setTileImage = (t: ImageData, rgbs: RGB[], mag = 1) => {
       const x = col * mag;
       const rgb = rgbs[ofs];
       if (rgb) {
-        const r = rgb[0];
-        const g = rgb[1];
-        const b = rgb[2];
-        const a = 0xff;
         for (let py = 0; py < mag; py++) {
           for (let px = 0; px < mag; px++) {
-            const imageOffset = ((y + py) * (8 * mag) + x + px) * 4;
-            t.data[imageOffset] = r;
-            t.data[imageOffset + 1] = g;
-            t.data[imageOffset + 2] = b;
-            t.data[imageOffset + 3] = a;
+            setRGB(t, 8 * mag, x + px, y + py, rgb);
           }
         }
       } else {
         return;
+      }
+    }
+  }
+};
+
+/**
+ * @param t Target 8x8 tilemap image
+ * @param w tilemap row length for calculate offset
+ * @param x horizontal pixel
+ * @param y vertical pixel
+ * @param rgb RGB888 data
+ */
+export const setRGB = (t: ImageData, w: number, x: number, y: number, rgb: RGB) => {
+  const ofs = (y * w + x) * 4;
+  t.data[ofs] = rgb[0];
+  t.data[ofs + 1] = rgb[1];
+  t.data[ofs + 2] = rgb[2];
+  t.data[ofs + 3] = 0xff;
+};
+
+export const writeBorder = (t: ImageData) => {
+  const c: RGB = [0x7f, 0x7f, 0x7f];
+
+  for (let y = 0; y < t.height; y++) {
+    for (let x = 0; x < t.width; x++) {
+      switch (y) {
+        case 0:
+          setRGB(t, t.width, x, y, c);
+      }
+      switch (x) {
+        case 0:
+          setRGB(t, t.width, x, y, c);
       }
     }
   }
