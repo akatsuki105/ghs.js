@@ -9,7 +9,7 @@ type Props = {
   largeHeight: number;
   wait?: number;
   className?: string;
-  onScroll?: (x: number, y: number, setScroll: (x: number, y: number) => void) => void;
+  onScroll?: (x: number, y: number) => [number, number];
 };
 
 export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
@@ -17,17 +17,17 @@ export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
     const [scrollX, setScrollX] = useState(0);
     const [scrollY, setScrollY] = useState(0);
 
-    const _onScroll = (x: number, y: number) => {
+    const _onScroll = (x: number, y: number): [number, number] => {
       setScrollX(x);
       setScrollY(y);
 
       if (onScroll) {
-        const callback = (x: number, y: number) => {
-          setScrollX(x);
-          setScrollY(y);
-        };
-        onScroll(x, y, callback);
+        const [newX, newY] = onScroll(x, y);
+
+        return [newX, newY];
       }
+
+      return [x, y];
     };
 
     return (

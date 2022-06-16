@@ -30,7 +30,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
         const [w, h] = [canvas.current.width, canvas.current.height];
         ctx.clearRect(0, 0, w, visibleHeight);
         ctx.fillRect(0, 0, canvasWidth, visibleHeight);
-        const c: RGB = [0x7f, 0x7f, 0x7f];
+        const c: RGB = [0x4f, 0x4f, 0x4f];
         for (let y = 0; y < dim[1]; y++) {
           for (let x = 0; x < dim[0]; x++) {
             const [tileX, tileY] = [start[0] + x, start[1] + y];
@@ -44,7 +44,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
           }
         }
         if (grid) {
-          const c: RGB = [0x1f, 0x1f, 0x1f];
+          const c: RGB = [0x0f, 0x0f, 0x0f];
           const img = ctx.getImageData(0, 0, w, h);
           writeBorder(img, c);
           for (let y = 0; y < h; y++) {
@@ -56,11 +56,26 @@ export const TileViewer: React.VFC<Props> = React.memo(
       refreshCanvas();
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
-    const _onScroll = (x: number, y: number, setScroll: (x: number, y: number) => void) => {
-      const [tileX, tileY] = [Math.floor(x / gridSize), Math.floor(y / gridSize)];
-      setScroll(tileX * gridSize, tileY * gridSize);
-      setStart([tileX, tileY]);
-      onScroll && onScroll(tileX, tileY);
+    const _onScroll = (x: number, y: number): [number, number] => {
+      if (start[1] * gridSize > y) {
+        // up
+        const [tileX, tileY] = [Math.floor(x / gridSize), Math.floor(y / gridSize)];
+        if (tileX != start[0] || tileY != start[1]) {
+          setStart([tileX, tileY]);
+          onScroll && onScroll(tileX, tileY);
+        }
+
+        return [tileX * gridSize, tileY * gridSize];
+      }
+
+      // down
+      const [tileX, tileY] = [Math.ceil(x / gridSize), Math.ceil(y / gridSize)];
+      if (tileX != start[0] || tileY != start[1]) {
+        setStart([tileX, tileY]);
+        onScroll && onScroll(tileX, tileY);
+      }
+
+      return [tileX * gridSize, tileY * gridSize];
     };
 
     return (
