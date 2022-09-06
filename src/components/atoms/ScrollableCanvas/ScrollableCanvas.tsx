@@ -4,9 +4,9 @@ import { ScrollableCanvasContainer } from './ScrollableCanvasContainer';
 
 type Props = {
   width: number;
-  height: number;
+  height: number; // 可視部分の高さ
   largeWidth: number;
-  largeHeight: number;
+  largeHeight: number; // 内部データを全部一気に表示した場合の高さ
   wait?: number;
   className?: string;
   onScroll?: (x: number, y: number) => void;

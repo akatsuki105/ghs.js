@@ -6,9 +6,9 @@ import { setRGB, setTileImage, writeBorder } from './helper';
 type Props = {
   rgb: RGB[];
   w: number;
-  h: number;
+  h: number; // キャンバス部分
   grid?: boolean;
-  scale?: number;
+  scale?: number; // キャンバスの高さは変わらない
   className?: string;
   onScroll?: (xTile: number, yTile: number) => void;
 };
@@ -56,6 +56,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
       refreshCanvas();
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
+    // スクロール後の座標をグリッドに合わせる
     const _onScroll = (x: number, y: number) => {
       if (start[1] * gridSize > y) {
         // up
