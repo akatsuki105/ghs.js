@@ -10,14 +10,13 @@ type Props = {
   grid?: boolean;
   scale?: number; // キャンバスの高さは変わらない
   className?: string;
-  onScroll?: (xTile: number, yTile: number) => void;
 };
 
 export const TileViewer: React.VFC<Props> = React.memo(
-  ({ rgb, w, h, grid = false, scale = 1, onScroll, className }) => {
+  ({ rgb, w, h, grid = false, scale = 1, className }) => {
     const canvas = useRef<HTMLCanvasElement>(null);
     const canvasWidth = w * scale;
-    const [start, setStart] = useState<[number, number]>([0, 0]); // tile x, y on canvas visible left top
+    const [start, setStart] = useState<[number, number]>([0, 0]); // 可視部分が全体データのどこから始まるか
     const canvasHeight = (rgb.length * scale) / w;
     const visibleHeight = h;
     const gridSize = 8 * scale;
@@ -31,10 +30,12 @@ export const TileViewer: React.VFC<Props> = React.memo(
         const [w, h] = [canvas.current.width, canvas.current.height];
         ctx.clearRect(0, 0, w, visibleHeight);
         ctx.fillRect(0, 0, canvasWidth, visibleHeight);
+
         const c: RGB = [0x4f, 0x4f, 0x4f];
+        const [startX, startY] = [Math.floor(start[0] / gridSize), Math.floor(start[1] / gridSize)];
         for (let y = 0; y < dim[1]; y++) {
           for (let x = 0; x < dim[0]; x++) {
-            const [tileX, tileY] = [start[0] + x, start[1] + y];
+            const [tileX, tileY] = [startX + x, startY + y];
             const tile = ctx.createImageData(gridSize, gridSize);
             const tileIdx = tileY * dim[0] + tileX;
             const ofs = tileIdx * 64;
@@ -44,6 +45,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
             ctx.putImageData(tile, x * gridSize, y * gridSize);
           }
         }
+
         if (grid) {
           const c: RGB = [0x0f, 0x0f, 0x0f];
           const img = ctx.getImageData(0, 0, w, h);
@@ -57,25 +59,8 @@ export const TileViewer: React.VFC<Props> = React.memo(
       refreshCanvas();
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
-    // スクロール後の座標をグリッドに合わせる
     const _onScroll = (x: number, y: number) => {
-      if (start[1] * gridSize > y) {
-        // up
-        const [tileX, tileY] = [Math.floor(x / gridSize), Math.floor(y / gridSize)];
-        if (tileX != start[0] || tileY != start[1]) {
-          setStart([tileX, tileY]);
-          onScroll && onScroll(tileX, tileY);
-        }
-
-        return [tileX * gridSize, tileY * gridSize];
-      }
-
-      // down
-      const [tileX, tileY] = [Math.ceil(x / gridSize), Math.ceil(y / gridSize)];
-      if (tileX != start[0] || tileY != start[1]) {
-        setStart([tileX, tileY]);
-        onScroll && onScroll(tileX, tileY);
-      }
+      setStart([x, y]);
     };
 
     return (
