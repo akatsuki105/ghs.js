@@ -24,6 +24,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
     const dim = [w / 8, Math.ceil(visibleHeight / gridSize)]; // how many tiles are visible
 
     useEffect(() => {
+      // startで指定したタイルからキャンバスで見える分までをcanvasに描画
       const refreshCanvas = () => {
         if (!canvas || !canvas.current) return;
         const ctx = canvas.current.getContext('2d', { alpha: false })!;
