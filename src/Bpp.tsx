@@ -20,6 +20,7 @@ export const Bpp: React.VFC = React.memo(() => {
   const [width, setWidth] = useState<number>(16);
   const { height } = useWindowDimensions();
   const [addr, setAddr] = useState<number>(0x0800_0000);
+  const [jumpTo, setJumpTo] = useState<number>(-1);
 
   const scale = 4;
   const canvasHeight = ((height * 9) / 10) & ~(8 * scale - 1);
@@ -41,6 +42,7 @@ export const Bpp: React.VFC = React.memo(() => {
               rgb={rgb}
               scale={scale}
               onScroll={setAddress}
+              jumpTo={jumpTo}
               grid
             />
           </div>
@@ -71,10 +73,31 @@ export const Bpp: React.VFC = React.memo(() => {
             <div>{`Address: 0x${toHex(addr, 8)}`}</div>
             <Spacer size="sm" />
             <Slider label="Width" max={32} min={16} onChange={setWidth} />
+
             <Spacer size="lg" />
-            <Button>↑</Button>
+            <Button
+              onClick={() => {
+                const newAddr = addr - width * 32;
+                if (newAddr >= 0) {
+                  setJumpTo(newAddr);
+                  setAddr(newAddr);
+                }
+              }}
+            >
+              ↑
+            </Button>
             <Spacer size="sm" />
-            <Button>↓</Button>
+            <Button
+              onClick={() => {
+                const newAddr = addr + width * 32;
+                if (newAddr < 0x0800_0000 + rgb.length) {
+                  setJumpTo(newAddr);
+                  setAddr(newAddr);
+                }
+              }}
+            >
+              ↓
+            </Button>
           </>
         )}
       </div>

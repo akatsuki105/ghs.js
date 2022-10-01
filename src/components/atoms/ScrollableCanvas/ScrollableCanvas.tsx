@@ -10,10 +10,17 @@ type Props = {
   wait?: number;
   className?: string;
   onScroll?: (x: number, y: number) => void;
+
+  // スクロール位置を強制的に変えたい時(-1 で変えない)
+  scx?: number;
+  scy?: number;
 };
 
 export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
-  ({ width, height, largeWidth, largeHeight, wait = 10, className, onScroll }, ref) => {
+  (
+    { width, height, largeWidth, largeHeight, wait = 10, className, onScroll, scx = -1, scy = -1 },
+    ref,
+  ) => {
     const [scrollX, setScrollX] = useState(0);
     const [scrollY, setScrollY] = useState(0);
 
@@ -35,6 +42,8 @@ export const ScrollableCanvas = React.forwardRef<HTMLCanvasElement, Props>(
         largeWidth={largeWidth}
         largeHeight={largeHeight}
         className={className}
+        scx={scx}
+        scy={scy}
       >
         <Canvas ref={ref} width={width} height={height} translateX={scrollX} translateY={scrollY} />
       </ScrollableCanvasContainer>

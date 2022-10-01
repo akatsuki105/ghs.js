@@ -23,10 +23,25 @@ type Props = {
   onScroll?: (x: number, y: number) => void;
   className?: string;
   children: React.ReactNode;
+
+  // スクロール位置を強制的に変えたい時(-1 で変えない)
+  scx?: number;
+  scy?: number;
 };
 
 export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
-  ({ width, height, largeWidth, largeHeight, wait = 10, onScroll, className, children }) => {
+  ({
+    width,
+    height,
+    largeWidth,
+    largeHeight,
+    wait = 10,
+    onScroll,
+    className,
+    children,
+    scx = -1,
+    scy = -1,
+  }) => {
     const ref = useRef<HTMLDivElement>(null);
 
     const _onScroll = throttle(() => {
@@ -49,6 +64,16 @@ export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
         }
       };
     }, [ref, _onScroll]);
+
+    useEffect(() => {
+      if (ref.current === null) {
+        return;
+      }
+
+      const x = scx >= 0 ? scx : ref.current.scrollLeft;
+      const y = scx >= 0 ? scy : ref.current.scrollTop;
+      ref.current.scrollTo(x, y);
+    }, [scx, scy]);
 
     return (
       <ScrollContainer width={width} height={height} ref={ref} className={className}>
