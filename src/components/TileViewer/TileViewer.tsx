@@ -10,10 +10,11 @@ type Props = {
   grid?: boolean;
   scale?: number; // キャンバスの高さは変わらない
   className?: string;
+  onScroll?: (col: number, row: number) => void;
 };
 
 export const TileViewer: React.VFC<Props> = React.memo(
-  ({ rgb, w, h, grid = false, scale = 1, className }) => {
+  ({ rgb, w, h, grid = false, scale = 1, className, onScroll }) => {
     const canvas = useRef<HTMLCanvasElement>(null);
     const canvasWidth = w * scale;
     const [start, setStart] = useState<[number, number]>([0, 0]); // 可視部分が全体データのどこから始まるか
@@ -32,7 +33,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
         ctx.fillRect(0, 0, canvasWidth, visibleHeight);
 
         const c: RGB = [0x4f, 0x4f, 0x4f];
-        const [startX, startY] = [Math.floor(start[0] / gridSize), Math.floor(start[1] / gridSize)];
+        const [startX, startY] = [start[0], start[1]];
         for (let y = 0; y < dim[1]; y++) {
           for (let x = 0; x < dim[0]; x++) {
             const [tileX, tileY] = [startX + x, startY + y];
@@ -60,7 +61,10 @@ export const TileViewer: React.VFC<Props> = React.memo(
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
 
     const _onScroll = (x: number, y: number) => {
-      setStart([x, y]);
+      const col = Math.floor(x / gridSize);
+      const row = Math.floor(y / gridSize);
+      onScroll && onScroll(col, row);
+      setStart([col, row]);
     };
 
     return (

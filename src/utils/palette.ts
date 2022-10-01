@@ -14,6 +14,24 @@ export const rgb555 = (rgb888s: number[]): Uint16Array => {
   return new Uint16Array(rgb888s.map((c) => _rgb555(c)));
 };
 
+/**
+ * Convert RGB555 array into RGB888.
+ * @param rgb555 `(r5 << 10) | (g5 << 5) | b5`
+ * @returns `[R8, G8, B8]`
+ */
+export const rgb555To888 = (rgb555: number): [r8: number, g8: number, b8: number] => {
+  const r5 = rgb555 & 0b11111;
+  const g5 = (rgb555 >> 5) & 0b11111;
+  const b5 = (rgb555 >> 10) & 0b11111;
+
+  // 5bit color: abcde -> 8bit color: abcde abc
+  const r = (r5 << 3) | (r5 >> 2);
+  const g = (g5 << 3) | (g5 >> 2);
+  const b = (b5 << 3) | (b5 >> 2);
+
+  return [r, g, b];
+};
+
 const defaultPalette888 = [
   0xa5a5a5, 0x0042c6, 0x4229ce, 0x6b00bd, 0x942994, 0x9c1042, 0x9c3900, 0x8c6321, 0x637b29,
   0x298c29, 0x189410, 0x318463, 0x29739c, 0x000000, 0x000000, 0x000000,
