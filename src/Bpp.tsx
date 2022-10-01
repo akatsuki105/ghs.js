@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Separator, Spacer, ROMUpload, Box, Rom, FlexBox, TileViewer } from './components';
+import {
+  Separator,
+  Spacer,
+  ROMUpload,
+  Box,
+  Rom,
+  FlexBox,
+  TileViewer,
+  Slider,
+  Button,
+} from './components';
 import { useWindowDimensions } from './hooks';
 import { convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
@@ -7,7 +17,7 @@ import { convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
 export const Bpp: React.VFC = React.memo(() => {
   const [rgb, setRgb] = useState<RGB[]>([]);
-  const [width, _] = useState<number>(16);
+  const [width, setWidth] = useState<number>(16);
   const { height } = useWindowDimensions();
   const [addr, setAddr] = useState<number>(0x0800_0000);
 
@@ -43,7 +53,7 @@ export const Bpp: React.VFC = React.memo(() => {
       <Separator axis="vertical" stretch />
       <Spacer size="sm" />
 
-      <div className="w-1/2">
+      <div className="w-1/8">
         {!rgb.length && (
           <>
             <Spacer size="sm" />
@@ -56,8 +66,19 @@ export const Bpp: React.VFC = React.memo(() => {
           </>
         )}
 
-        {!!rgb.length && <div>{`Address: 0x${toHex(addr, 8)}`}</div>}
+        {!!rgb.length && (
+          <>
+            <div>{`Address: 0x${toHex(addr, 8)}`}</div>
+            <Spacer size="sm" />
+            <Slider label="Width" max={32} min={16} onChange={setWidth} />
+            <Spacer size="lg" />
+            <Button>↑</Button>
+            <Spacer size="sm" />
+            <Button>↓</Button>
+          </>
+        )}
       </div>
+      <div className="w-3/8"></div>
     </FlexBox>
   );
 });
