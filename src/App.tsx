@@ -3,12 +3,14 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { Bpp } from './Bpp';
 import { LZ77 } from './Lz77';
+import { Top } from './Top';
 import { Center, Separator, Spacer, Header } from './components';
 import { BinaryProvider } from './contexts/Binary';
 import theme from './theme';
+import { APP_NAME } from './utils';
 import './tailwind.css';
 
-const App = (): JSX.Element => {
+const App: React.FC = () => {
   return (
     <Providers>
       <div className="App">
@@ -20,9 +22,10 @@ const App = (): JSX.Element => {
           <Spacer size="sm" />
 
           <Routes>
-            <Route path="/GBAC.js/bpp" element={<Bpp />} />
-            <Route path="/GBAC.js/lz77" element={<LZ77 />} />
-            <Route path="*" element={<Navigate to="/GBAC.js/lz77" replace />} />
+            <Route path={`/${APP_NAME}/top`} element={<Top />} />
+            <Route path={`/${APP_NAME}/bpp`} element={<Bpp />} />
+            <Route path={`/${APP_NAME}/lz77`} element={<LZ77 />} />
+            <Route path="*" element={<Navigate to={`/${APP_NAME}/top`} replace />} />
           </Routes>
         </Center>
       </div>

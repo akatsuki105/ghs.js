@@ -8,20 +8,20 @@ export const defaultRom = {
 };
 
 type Props = {
-  load: (title: string, data: Uint8Array) => void;
+  upload: (title: string, data: Uint8Array) => void;
 };
 
-export const Uploader: React.FC<Props> = React.memo(({ load }) => {
+export const Uploader: React.FC<Props> = React.memo(({ upload }) => {
   const ref = useRef<HTMLInputElement>(null);
 
   const r = new FileReader();
 
   r.onloadend = () => {
     const bytes = new Uint8Array(r.result as ArrayBuffer);
-    load(title, bytes);
+    upload(title, bytes);
   };
 
-  const upload = () => {
+  const _upload = () => {
     const input = ref.current!;
     const file = input.files![0];
     title = file.name;
@@ -68,6 +68,7 @@ export const Uploader: React.FC<Props> = React.memo(({ load }) => {
           <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
           <polyline points="13 2 13 9 20 9"></polyline>
         </svg>
+
         <div className="flex text-sm text-gray-600">
           <label
             htmlFor="file-upload"
@@ -79,13 +80,13 @@ export const Uploader: React.FC<Props> = React.memo(({ load }) => {
               name="file-upload"
               type="file"
               className="sr-only"
-              onChange={upload}
+              onChange={_upload}
               ref={ref}
             />
           </label>
           <p className="pl-1">or drag and drop</p>
         </div>
-        <p className="text-xs text-gray-500">It is not over the network.</p>
+        <p className="text-xs text-gray-500">{"Don't worry. It is not over the network."}</p>
       </div>
     </div>
   );

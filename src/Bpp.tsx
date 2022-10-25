@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { Separator, Spacer, Uploader, Box, TileViewer, Slider, Button } from './components';
+import { useNavigate } from 'react-router-dom';
+import { Separator, Spacer, Box, TileViewer, Slider, Button } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { useWindowDimensions } from './hooks';
-import { convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
+import { APP_NAME, convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
 const ROM = 0x0800_0000 as const;
 
-export const Bpp: React.VFC = React.memo(() => {
+export const Bpp: React.FC = React.memo(() => {
   const rom = useContext(BinaryContext);
+  const navigate = useNavigate();
 
   const [rgb, setRgb] = useState<RGB[]>([]);
   const [width, setWidth] = useState<number>(16);
@@ -27,8 +29,10 @@ export const Bpp: React.VFC = React.memo(() => {
     if (!!rom.data) {
       const romRgb = convert4BppToRGB(rom.data, rgb555(palettes[0]));
       setRgb(romRgb);
+    } else {
+      navigate(`/${APP_NAME}/top`);
     }
-  }, [rom.data]);
+  }, [rom.data]); // eslint-disable-line
 
   return (
     <div className="flex w-full">
@@ -55,63 +59,48 @@ export const Bpp: React.VFC = React.memo(() => {
       <Spacer size="sm" />
 
       <div className="w-1/8">
-        {!rom.data && (
-          <>
-            <Spacer size="sm" />
-            <Uploader
-              load={(title: string, data: Uint8Array) => {
-                rom.setBinary(title, data);
-              }}
-            />
-          </>
-        )}
+        <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
+        <Spacer size="sm" />
+        <Slider label="Width" max={32} min={16} onChange={setWidth} />
 
-        {!!rom.data && (
-          <>
-            <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
-            <Spacer size="sm" />
-            <Slider label="Width" max={32} min={16} onChange={setWidth} />
+        <Spacer size="lg" />
+        <Button
+          onClick={() => {
+            const newAddr = addr - width * 32;
+            if (newAddr >= 0) {
+              setJumpTo(ROM + newAddr);
+              setAddr(newAddr);
+            }
+          }}
+        >
+          ↑
+        </Button>
+        <Spacer size="sm" />
+        <Button
+          onClick={() => {
+            const newAddr = addr + width * 32;
+            if (newAddr < rgb.length) {
+              setJumpTo(ROM + newAddr);
+              setAddr(newAddr);
+            }
+          }}
+        >
+          ↓
+        </Button>
 
-            <Spacer size="lg" />
-            <Button
-              onClick={() => {
-                const newAddr = addr - width * 32;
-                if (newAddr >= 0) {
-                  setJumpTo(ROM + newAddr);
-                  setAddr(newAddr);
-                }
-              }}
-            >
-              ↑
-            </Button>
-            <Spacer size="sm" />
-            <Button
-              onClick={() => {
-                const newAddr = addr + width * 32;
-                if (newAddr < rgb.length) {
-                  setJumpTo(ROM + newAddr);
-                  setAddr(newAddr);
-                }
-              }}
-            >
-              ↓
-            </Button>
+        <Spacer size="md" />
 
-            <Spacer size="md" />
-
-            <div>
-              <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
-                Jump to address
-              </label>
-              <JumpTo
-                jumpTo={(addr) => {
-                  setJumpTo(addr);
-                  setAddr(addr - ROM);
-                }}
-              />
-            </div>
-          </>
-        )}
+        <div>
+          <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
+            Jump to address
+          </label>
+          <JumpTo
+            jumpTo={(addr) => {
+              setJumpTo(addr);
+              setAddr(addr - ROM);
+            }}
+          />
+        </div>
       </div>
       <div className="w-3/8"></div>
     </div>
