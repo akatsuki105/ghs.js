@@ -46,6 +46,8 @@ export const LZ77: React.FC = React.memo(() => {
     }
   }, [rom.data]); // eslint-disable-line
 
+  if (!rom.name) return <></>;
+
   return (
     <>
       {rgb.length > 0 ? (
@@ -151,19 +153,21 @@ export const LZ77: React.FC = React.memo(() => {
           <Spacer size="sm" />
           <Selector
             onChange={(val: string) => {
-              const decompressed = decompressLZ77(rom.data!, info?.addr || 0);
-              switch (val) {
-                case '4Bpp': {
-                  setBpp(4);
-                  const rgb = convert4BppToRGB(decompressed[0], rgb555(palettes[pal]));
-                  setRgb(rgb);
-                  break;
-                }
-                case '8Bpp': {
-                  setBpp(8);
-                  const rgb = convert8BppToRGB(decompressed[0], rgb555(palettes[pal]));
-                  setRgb(rgb);
-                  break;
+              if (!!rom.data) {
+                const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                switch (val) {
+                  case '4Bpp': {
+                    setBpp(4);
+                    const rgb = convert4BppToRGB(decompressed[0], rgb555(palettes[pal]));
+                    setRgb(rgb);
+                    break;
+                  }
+                  case '8Bpp': {
+                    setBpp(8);
+                    const rgb = convert8BppToRGB(decompressed[0], rgb555(palettes[pal]));
+                    setRgb(rgb);
+                    break;
+                  }
                 }
               }
             }}
@@ -176,13 +180,15 @@ export const LZ77: React.FC = React.memo(() => {
               <>
                 <div
                   onClick={() => {
-                    setPal(i);
-                    const decompressed = decompressLZ77(rom.data!, info?.addr || 0);
-                    const rgb =
-                      bpp === 4
-                        ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
-                        : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
-                    setRgb(rgb);
+                    if (!!rom.data) {
+                      setPal(i);
+                      const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                      const rgb =
+                        bpp === 4
+                          ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
+                          : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
+                      setRgb(rgb);
+                    }
                   }}
                 >
                   <Palette id={`pal${i}`} colors={p} />
@@ -196,7 +202,7 @@ export const LZ77: React.FC = React.memo(() => {
         <Spacer size="md" />
 
         <div>
-          <ROMInfo rom={rom} />
+          <ROMInfo title={rom.name} />
           <Spacer size="sm" />
           <Separator />
           <Spacer size="sm" />

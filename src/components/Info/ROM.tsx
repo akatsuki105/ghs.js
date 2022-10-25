@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Rom } from '../Uploader';
 
 type Props = {
-  rom: Rom;
+  title: string;
 };
 
-export const ROMInfo: React.VFC<Props> = React.memo(({ rom }) => {
+export const ROMInfo: React.VFC<Props> = React.memo(({ title }) => {
   return (
     <Container>
       <div className="text-lg font-medium">ROM Info</div>
-      <StyledDiv>Title: {rom.title}</StyledDiv>
+      <StyledDiv>Title: {title}</StyledDiv>
     </Container>
   );
 });

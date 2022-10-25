@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spacer } from '../atoms';
 
-export const Header: React.VFC = React.memo(() => {
+export const Header: React.FC = React.memo(() => {
   const navigate = useNavigate();
 
   return (
