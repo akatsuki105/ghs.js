@@ -1,3 +1,5 @@
+import md5 from 'js-md5';
+import sha1 from 'js-sha1';
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Center, Spacer } from './components';
@@ -22,9 +24,11 @@ export const Info: React.FC = React.memo(() => {
   const gamecode = new TextDecoder().decode(rom.data?.slice(0xac, 0xac + 4));
   const maker = new TextDecoder().decode(rom.data?.slice(0xb0, 0xb0 + 2));
   const version = rom.data?.at(0xbc) || 0x00;
+  const md5Hash = md5.create().update(rom.data).hex();
+  const sha1Hash = sha1.create().update(rom.data).hex();
 
   return (
-    <Center className="max-w-screen-lg">
+    <Center className="max-w-screen-lg mx-auto">
       <div className="w-1/2">
         <p className="text-3xl">ROM Info</p>
 
@@ -32,7 +36,7 @@ export const Info: React.FC = React.memo(() => {
 
         <div>
           <span className="text-sm">Filename:</span>
-          <Input value={rom.name} />
+          <Input className="w-full" value={rom.name} />
         </div>
 
         <Spacer size="sm" />
@@ -68,6 +72,20 @@ export const Info: React.FC = React.memo(() => {
         <div>
           <span className="text-sm">Software Version:</span>
           <Input value={`v1.${version.toString()}`} />
+        </div>
+
+        <Spacer size="sm" />
+
+        <div>
+          <span className="text-sm">MD5 Hash:</span>
+          <Input value={md5Hash} />
+        </div>
+
+        <Spacer size="sm" />
+
+        <div>
+          <span className="text-sm">SHA1 Hash:</span>
+          <Input value={sha1Hash} />
         </div>
       </div>
     </Center>
