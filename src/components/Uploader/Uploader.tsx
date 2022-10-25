@@ -2,35 +2,27 @@ import React, { useRef } from 'react';
 
 let title = '';
 
-export type Rom = {
-  title: string;
-  data: Uint8Array;
-};
-
 export const defaultRom = {
   title: '',
   data: new Uint8Array(0),
 };
 
 type Props = {
-  load: (data: Rom) => void;
+  load: (title: string, data: Uint8Array) => void;
 };
 
-export const ROMUpload: React.VFC<Props> = React.memo(({ load }) => {
+export const Uploader: React.FC<Props> = React.memo(({ load }) => {
   const ref = useRef<HTMLInputElement>(null);
 
   const r = new FileReader();
 
   r.onloadend = () => {
     const bytes = new Uint8Array(r.result as ArrayBuffer);
-    load({
-      title: title,
-      data: bytes,
-    });
+    load(title, bytes);
   };
 
   const upload = () => {
-    const input = document.getElementById('file-upload')! as HTMLInputElement;
+    const input = ref.current!;
     const file = input.files![0];
     title = file.name;
     if (title.endsWith('.gba')) {

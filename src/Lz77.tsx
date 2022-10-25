@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import {
   Separator,
@@ -6,14 +6,13 @@ import {
   TileViewer,
   Slider,
   Palette,
-  ROMUpload,
+  Uploader,
   Box,
-  Rom,
-  defaultRom,
   ROMInfo,
   ImageInfo,
   ImageInfoProps,
 } from './components';
+import { BinaryContext } from './contexts/Binary';
 import {
   convert4BppToRGB,
   convert8BppToRGB,
@@ -26,7 +25,8 @@ import {
 import { DataInfo } from 'utils/helper';
 
 export const LZ77: React.VFC = React.memo(() => {
-  const [rom, setRom] = useState<Rom>(defaultRom);
+  const rom = useContext(BinaryContext);
+
   const [rgb, setRgb] = useState<RGB[]>([]);
   const [width, setWidth] = useState<number>(2);
   const [bpp, setBpp] = useState<number>(4);
@@ -35,6 +35,12 @@ export const LZ77: React.VFC = React.memo(() => {
   const [info, setInfo] = useState<ImageInfoProps | null>(null);
 
   const [pal, setPal] = useState<number>(0);
+
+  useEffect(() => {
+    if (!!rom.data) {
+      setRows(lookupLZ77(rom.data));
+    }
+  }, [rom.data]);
 
   return (
     <>
@@ -48,14 +54,12 @@ export const LZ77: React.VFC = React.memo(() => {
       <Separator />
       <Spacer size="sm" />
 
-      {rows.length === 0 ? (
+      {!rom.data ? (
         <>
           <Spacer size="sm" />
-          <ROMUpload
-            load={(r: Rom) => {
-              setRom(r);
-              setRows(lookupLZ77(r.data));
-              // setRows(lookupRLE(r.data));
+          <Uploader
+            load={(title: string, data: Uint8Array) => {
+              rom.setBinary(title, data);
             }}
           />
         </>
@@ -125,7 +129,7 @@ export const LZ77: React.VFC = React.memo(() => {
                                   decompressedSize: r[2],
                                 });
                                 const pal555 = rgb555(palettes[pal]);
-                                const [decompressed] = decompressLZ77(rom.data, r[0]);
+                                const [decompressed] = decompressLZ77(rom.data!, r[0]);
                                 // const [decompressed] = decompressRLE(rom.data, r[0]);
                                 const buf =
                                   bpp === 4
@@ -153,7 +157,7 @@ export const LZ77: React.VFC = React.memo(() => {
             <Spacer size="sm" />
             <Selector
               onChange={(val: string) => {
-                const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                const decompressed = decompressLZ77(rom.data!, info?.addr || 0);
                 switch (val) {
                   case '4Bpp': {
                     setBpp(4);
@@ -179,7 +183,7 @@ export const LZ77: React.VFC = React.memo(() => {
                   <div
                     onClick={() => {
                       setPal(i);
-                      const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                      const decompressed = decompressLZ77(rom.data!, info?.addr || 0);
                       const rgb =
                         bpp === 4
                           ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))

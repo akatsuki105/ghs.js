@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Rom } from '../ROMUpload';
+import { Rom } from '../Uploader';
 
 type Props = {
   rom: Rom;

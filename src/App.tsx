@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Bpp } from './Bpp';
 import { LZ77 } from './Lz77';
 import { Center, Separator, Spacer, Header } from './components';
+import { BinaryProvider } from './contexts/Binary';
 import theme from './theme';
 import './tailwind.css';
 
@@ -32,7 +33,9 @@ const App = (): JSX.Element => {
 const Providers: React.FC = React.memo(({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <BinaryProvider>
+        <BrowserRouter>{children}</BrowserRouter>
+      </BinaryProvider>
     </ThemeProvider>
   );
 });

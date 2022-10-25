@@ -1,11 +1,14 @@
-import React, { useRef, useState } from 'react';
-import { Separator, Spacer, ROMUpload, Box, Rom, TileViewer, Slider, Button } from './components';
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { Separator, Spacer, Uploader, Box, TileViewer, Slider, Button } from './components';
+import { BinaryContext } from './contexts/Binary';
 import { useWindowDimensions } from './hooks';
 import { convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
 const ROM = 0x0800_0000 as const;
 
 export const Bpp: React.VFC = React.memo(() => {
+  const rom = useContext(BinaryContext);
+
   const [rgb, setRgb] = useState<RGB[]>([]);
   const [width, setWidth] = useState<number>(16);
   const { height } = useWindowDimensions();
@@ -19,6 +22,13 @@ export const Bpp: React.VFC = React.memo(() => {
     const ofs = (row * width + col) * 32;
     setAddr(ofs);
   };
+
+  useEffect(() => {
+    if (!!rom.data) {
+      const romRgb = convert4BppToRGB(rom.data, rgb555(palettes[0]));
+      setRgb(romRgb);
+    }
+  }, [rom.data]);
 
   return (
     <div className="flex w-full">
@@ -45,19 +55,18 @@ export const Bpp: React.VFC = React.memo(() => {
       <Spacer size="sm" />
 
       <div className="w-1/8">
-        {!rgb.length && (
+        {!rom.data && (
           <>
             <Spacer size="sm" />
-            <ROMUpload
-              load={(r: Rom) => {
-                const romRgb = convert4BppToRGB(r.data, rgb555(palettes[0]));
-                setRgb(romRgb);
+            <Uploader
+              load={(title: string, data: Uint8Array) => {
+                rom.setBinary(title, data);
               }}
             />
           </>
         )}
 
-        {!!rgb.length && (
+        {!!rom.data && (
           <>
             <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
             <Spacer size="sm" />
