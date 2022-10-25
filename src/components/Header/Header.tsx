@@ -13,10 +13,10 @@ export const Header: React.FC = React.memo(() => {
       <Spacer axis="horizontal" size="md" />
 
       <h1
-        className="text-lg w-1/6"
+        className="text-lg w-1/6 cursor-pointer"
         onClick={() => {
           rom.setBinary();
-          navigate('/GBAC.js/top');
+          navigate(`/${APP_NAME}/top`);
         }}
       >
         {APP_NAME}
@@ -24,36 +24,41 @@ export const Header: React.FC = React.memo(() => {
 
       <div className="w-5/6"></div>
 
-      <div className="flex justify-items-end">
-        <div
-          onClick={() => {
-            navigate('/GBAC.js/info');
-          }}
-        >
-          Info
+      {!!rom.data && (
+        <div className="flex justify-items-end">
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/${APP_NAME}/info`);
+            }}
+          >
+            Info
+          </div>
+
+          <Spacer axis="horizontal" size="md" />
+
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/${APP_NAME}/bpp`);
+            }}
+          >
+            4Bpp
+          </div>
+
+          <Spacer axis="horizontal" size="md" />
+
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/${APP_NAME}/lz77`);
+            }}
+          >
+            LZ77
+          </div>
+          <Spacer axis="horizontal" size="md" />
         </div>
-
-        <Spacer axis="horizontal" size="md" />
-
-        <div
-          onClick={() => {
-            navigate('/GBAC.js/bpp');
-          }}
-        >
-          4Bpp
-        </div>
-
-        <Spacer axis="horizontal" size="md" />
-
-        <div
-          onClick={() => {
-            navigate('/GBAC.js/lz77');
-          }}
-        >
-          LZ77
-        </div>
-        <Spacer axis="horizontal" size="md" />
-      </div>
+      )}
     </div>
   );
 });
