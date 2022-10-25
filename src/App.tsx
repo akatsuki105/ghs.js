@@ -3,8 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { Bpp } from './Bpp';
 import { LZ77 } from './Lz77';
-import { Page, Separator, Spacer, Header } from './components';
-import { ModalsProvider } from './contexts';
+import { Center, Separator, Spacer, Header } from './components';
 import theme from './theme';
 import './tailwind.css';
 
@@ -14,7 +13,7 @@ const App = (): JSX.Element => {
       <div className="App">
         <Spacer axis="vertical" size="sm" />
         <Header />
-        <Page>
+        <Center>
           <Spacer size="sm" />
           <Separator />
           <Spacer size="sm" />
@@ -24,7 +23,7 @@ const App = (): JSX.Element => {
             <Route path="/GBAC.js/lz77" element={<LZ77 />} />
             <Route path="*" element={<Navigate to="/GBAC.js/lz77" replace />} />
           </Routes>
-        </Page>
+        </Center>
       </div>
     </Providers>
   );
@@ -33,9 +32,7 @@ const App = (): JSX.Element => {
 const Providers: React.FC = React.memo(({ children }) => {
   return (
     <ThemeProvider theme={theme}>
-      <ModalsProvider>
-        <BrowserRouter>{children}</BrowserRouter>
-      </ModalsProvider>
+      <BrowserRouter>{children}</BrowserRouter>
     </ThemeProvider>
   );
 });

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { FlexBox, Spacer } from '..';
+import { Spacer } from '..';
 
 export interface SliderProps {
   label?: string;
@@ -28,7 +28,7 @@ export const Slider: React.FC<SliderProps> = React.memo(
             {label}
           </label>
         )}
-        <FlexBox>
+        <div className="flex">
           <input
             type="range"
             className="form-range w-full h-6 p-0 bg-transparent focus:outline-none focus:ring-0 focus:shadow-none"
@@ -40,7 +40,7 @@ export const Slider: React.FC<SliderProps> = React.memo(
           />
           <Spacer size="sm" />
           <div>{val}</div>
-        </FlexBox>
+        </div>
       </div>
     );
   },

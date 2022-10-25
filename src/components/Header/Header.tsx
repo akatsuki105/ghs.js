@@ -1,16 +1,16 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FlexBox, Spacer } from '../atoms';
+import { Spacer } from '../atoms';
 
 export const Header: React.VFC = React.memo(() => {
   const navigate = useNavigate();
 
   return (
-    <FlexBox>
+    <div className="flex">
       <Spacer axis="horizontal" size="md" />
       <h1 className="text-lg w-1/6">GBAC.js</h1>
       <div className="w-5/6"></div>
-      <FlexBox className="justify-items-end">
+      <div className="flex justify-items-end">
         <div
           onClick={() => {
             navigate('/GBAC.js/bpp');
@@ -27,7 +27,7 @@ export const Header: React.VFC = React.memo(() => {
           LZ77
         </div>
         <Spacer axis="horizontal" size="md" />
-      </FlexBox>
-    </FlexBox>
+      </div>
+    </div>
   );
 });

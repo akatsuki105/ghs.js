@@ -1,15 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {
-  Separator,
-  Spacer,
-  ROMUpload,
-  Box,
-  Rom,
-  FlexBox,
-  TileViewer,
-  Slider,
-  Button,
-} from './components';
+import { Separator, Spacer, ROMUpload, Box, Rom, TileViewer, Slider, Button } from './components';
 import { useWindowDimensions } from './hooks';
 import { convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
@@ -31,7 +21,7 @@ export const Bpp: React.VFC = React.memo(() => {
   };
 
   return (
-    <FlexBox className="w-full">
+    <div className="flex w-full">
       <div className="w-1/2">
         {rgb.length > 0 ? (
           <div className="flex justify-center">
@@ -115,7 +105,7 @@ export const Bpp: React.VFC = React.memo(() => {
         )}
       </div>
       <div className="w-3/8"></div>
-    </FlexBox>
+    </div>
   );
 });
 

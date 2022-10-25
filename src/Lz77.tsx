@@ -6,7 +6,6 @@ import {
   TileViewer,
   Slider,
   Palette,
-  FlexBox,
   ROMUpload,
   Box,
   Rom,
@@ -61,7 +60,7 @@ export const LZ77: React.VFC = React.memo(() => {
           />
         </>
       ) : (
-        <FlexBox>
+        <div className="flex">
           <StyledDiv className="flex flex-col border">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
               <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -209,7 +208,7 @@ export const LZ77: React.VFC = React.memo(() => {
               decompressedSize={info?.decompressedSize || 0}
             />
           </div>
-        </FlexBox>
+        </div>
       )}
     </>
   );
