@@ -11,6 +11,7 @@ import {
   ROMInfo,
   ImageInfo,
   ImageInfoProps,
+  Center,
 } from './components';
 import { BinaryContext } from './contexts/Binary';
 import {
@@ -49,7 +50,7 @@ export const LZ77: React.FC = React.memo(() => {
   if (!rom.name) return <></>;
 
   return (
-    <>
+    <Center>
       {rgb.length > 0 ? (
         <TileViewer w={width * 8} h={304} rgb={rgb} scale={4} grid />
       ) : (
@@ -213,7 +214,7 @@ export const LZ77: React.FC = React.memo(() => {
           />
         </div>
       </div>
-    </>
+    </Center>
   );
 });
 

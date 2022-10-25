@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Separator, Spacer, Box, TileViewer, Slider, Button } from './components';
+import { Separator, Spacer, Box, TileViewer, Slider, Button, Center } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { useWindowDimensions } from './hooks';
 import { APP_NAME, convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
@@ -35,75 +35,77 @@ export const Bpp: React.FC = React.memo(() => {
   }, [rom.data]); // eslint-disable-line
 
   return (
-    <div className="flex w-full">
-      <div className="w-1/2">
-        {rgb.length > 0 ? (
-          <div className="flex justify-center">
-            <TileViewer
-              w={width * 8}
-              h={canvasHeight}
-              rgb={rgb}
-              scale={scale}
-              onScroll={onScroll}
-              jumpTo={jumpTo}
-              grid
+    <Center>
+      <div className="flex w-full">
+        <div className="w-1/2">
+          {rgb.length > 0 ? (
+            <div className="flex justify-center">
+              <TileViewer
+                w={width * 8}
+                h={canvasHeight}
+                rgb={rgb}
+                scale={scale}
+                onScroll={onScroll}
+                jumpTo={jumpTo}
+                grid
+              />
+            </div>
+          ) : (
+            <Box height={canvasHeight} />
+          )}
+        </div>
+
+        <Spacer size="sm" />
+        <Separator axis="vertical" stretch />
+        <Spacer size="sm" />
+
+        <div className="w-1/8">
+          <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
+          <Spacer size="sm" />
+          <Slider label="Width" max={32} min={16} onChange={setWidth} />
+
+          <Spacer size="lg" />
+          <Button
+            onClick={() => {
+              const newAddr = addr - width * 32;
+              if (newAddr >= 0) {
+                setJumpTo(ROM + newAddr);
+                setAddr(newAddr);
+              }
+            }}
+          >
+            ↑
+          </Button>
+          <Spacer size="sm" />
+          <Button
+            onClick={() => {
+              const newAddr = addr + width * 32;
+              if (newAddr < rgb.length) {
+                setJumpTo(ROM + newAddr);
+                setAddr(newAddr);
+              }
+            }}
+          >
+            ↓
+          </Button>
+
+          <Spacer size="md" />
+
+          <div>
+            <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
+              Jump to address
+            </label>
+            <JumpTo
+              jumpTo={(addr) => {
+                setJumpTo(addr);
+                setAddr(addr - ROM);
+              }}
             />
           </div>
-        ) : (
-          <Box height={canvasHeight} />
-        )}
-      </div>
-
-      <Spacer size="sm" />
-      <Separator axis="vertical" stretch />
-      <Spacer size="sm" />
-
-      <div className="w-1/8">
-        <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
-        <Spacer size="sm" />
-        <Slider label="Width" max={32} min={16} onChange={setWidth} />
-
-        <Spacer size="lg" />
-        <Button
-          onClick={() => {
-            const newAddr = addr - width * 32;
-            if (newAddr >= 0) {
-              setJumpTo(ROM + newAddr);
-              setAddr(newAddr);
-            }
-          }}
-        >
-          ↑
-        </Button>
-        <Spacer size="sm" />
-        <Button
-          onClick={() => {
-            const newAddr = addr + width * 32;
-            if (newAddr < rgb.length) {
-              setJumpTo(ROM + newAddr);
-              setAddr(newAddr);
-            }
-          }}
-        >
-          ↓
-        </Button>
-
-        <Spacer size="md" />
-
-        <div>
-          <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
-            Jump to address
-          </label>
-          <JumpTo
-            jumpTo={(addr) => {
-              setJumpTo(addr);
-              setAddr(addr - ROM);
-            }}
-          />
         </div>
+        <div className="w-3/8"></div>
       </div>
-      <div className="w-3/8"></div>
-    </div>
+    </Center>
   );
 });
 

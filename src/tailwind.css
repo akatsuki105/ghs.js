@@ -974,6 +974,10 @@ select {
   min-width: 100%;
 }
 
+.max-w-screen-lg {
+  max-width: 1024px;
+}
+
 .max-w-lg {
   max-width: 32rem;
 }
@@ -1149,6 +1153,11 @@ select {
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-xs {
