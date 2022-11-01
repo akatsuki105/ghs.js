@@ -10,7 +10,7 @@ type Props = {
 export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16 }) => {
   useEffect(() => {
     const canvas = document.getElementById(id)! as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d', { alpha: false })!;
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })!;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     colors.map((c, idx) => {

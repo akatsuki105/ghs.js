@@ -38,7 +38,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
       // startで指定したタイルからキャンバスで見える分までをcanvasに描画
       const refreshCanvas = () => {
         if (!canvas || !canvas.current) return;
-        const ctx = canvas.current.getContext('2d', { alpha: false })!;
+        const ctx = canvas.current.getContext('2d', { alpha: false, desynchronized: true })!;
         const [w, h] = [canvas.current.width, canvas.current.height];
         ctx.clearRect(0, 0, w, visibleHeight);
         ctx.fillRect(0, 0, canvasWidth, visibleHeight);
