@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Bpp } from './Bpp';
 import { Info } from './Info';
 import { LZ77 } from './Lz77';
+import { PaletteViewer } from './Palette';
 import { Top } from './Top';
 import { Separator, Spacer, Header } from './components';
 import { BinaryProvider } from './contexts/Binary';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
           <Route path={`/${APP_NAME}/info`} element={<Info />} />
           <Route path={`/${APP_NAME}/bpp`} element={<Bpp />} />
           <Route path={`/${APP_NAME}/lz77`} element={<LZ77 />} />
+          <Route path={`/${APP_NAME}/pal`} element={<PaletteViewer />} />
           <Route path="*" element={<Navigate to={`/${APP_NAME}/top`} replace />} />
         </Routes>
       </div>

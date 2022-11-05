@@ -14,3 +14,10 @@ export const toHex = (val: number, maxLength: number, prefix = ''): string => {
 
 /** `[addr, compressed_data_size, decompressed_data_size]` */
 export type DataInfo = [number, number, number];
+
+export const loadU16 = (src: Uint8Array, addr: number, start = 0x0800_0000): number => {
+  const lo = src[addr - start];
+  const hi = src[addr + 1 - start];
+
+  return lo | (hi << 8);
+};

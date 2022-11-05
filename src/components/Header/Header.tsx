@@ -57,6 +57,15 @@ export const Header: React.FC = React.memo(() => {
             LZ77
           </div>
           <Spacer axis="horizontal" size="md" />
+          <div
+            className="cursor-pointer"
+            onClick={() => {
+              navigate(`/${APP_NAME}/pal`);
+            }}
+          >
+            Palette
+          </div>
+          <Spacer axis="horizontal" size="md" />
         </div>
       )}
     </div>

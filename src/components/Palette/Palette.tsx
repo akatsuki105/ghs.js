@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 
 type Props = {
   id: string;
-  colors: number[];
+  colors: number[]; // uint32(rgb888) array
   width?: number;
+  className?: string;
 };
 
-export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16 }) => {
+export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16, className }) => {
   useEffect(() => {
     const canvas = document.getElementById(id)! as HTMLCanvasElement;
     const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })!;
@@ -32,12 +32,8 @@ export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16 })
   });
 
   return (
-    <StyledDiv>
+    <div style={{ height: '16px' }} className={className}>
       <canvas id={id} width={width * 16} height="16"></canvas>
-    </StyledDiv>
+    </div>
   );
 });
-
-const StyledDiv = styled.div`
-  height: 16px;
-`;
