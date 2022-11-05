@@ -8,6 +8,8 @@ type Props = {
 };
 
 export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16, className }) => {
+  const row = Math.ceil(colors.length / width);
+
   useEffect(() => {
     const canvas = document.getElementById(id)! as HTMLCanvasElement;
     const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })!;
@@ -27,13 +29,12 @@ export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16, c
           imageData.data[i++] = 0xff;
         }
       }
-      ctx.putImageData(imageData, idx * 16, 0);
+
+      const x = (idx % width) * 16;
+      const y = Math.floor(idx / width) * 16;
+      ctx.putImageData(imageData, x, y);
     });
   });
 
-  return (
-    <div style={{ height: '16px' }} className={className}>
-      <canvas id={id} width={width * 16} height="16"></canvas>
-    </div>
-  );
+  return <canvas id={id} width={width * 16} height={row * 16} className={className}></canvas>;
 });
