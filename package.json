@@ -1,8 +1,8 @@
 {
-  "name": "gbac",
+  "name": "gba-hack-suite",
   "version": "0.1.0",
   "start_url": ".",
-  "homepage": "https://pokemium.github.io/GBAC.js/",
+  "homepage": "https://pokemium.github.io/gba-hack-suite.js/",
   "private": true,
   "scripts": {
     "start": "vite",

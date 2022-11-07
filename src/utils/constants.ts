@@ -1,1 +1,1 @@
-export const APP_NAME = 'GBAC.js';
+export const APP_NAME = 'ghs.js';
