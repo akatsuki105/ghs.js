@@ -60,7 +60,7 @@ export const LZ77: React.FC = React.memo(() => {
       <Divider />
       <Spacer h="4" />
 
-      <Flex>
+      <Flex gap={4}>
         <VStack maxH="600px" overflowY="scroll">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -145,8 +145,6 @@ export const LZ77: React.FC = React.memo(() => {
             </div>
           </div>
         </VStack>
-
-        <Spacer h="6" />
 
         <Box>
           Width
