@@ -1453,6 +1453,11 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@types/caniuse-lite@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@types/caniuse-lite/-/caniuse-lite-1.0.1.tgz#368292d5d28268cb7917b9178fcdd500df22d64a"
+  integrity sha512-enW8d/vdojHAhr1C/0BqsNkhz/0ik2WCuAJIp9EClP+mHkR8xXBJ2OGeXHZ6cPqDjVKvWBRe9tY/Nr9r4yQSuA==
+
 "@types/eslint-config-prettier@^6.11.0":
   version "6.11.0"
   resolved "https://registry.yarnpkg.com/@types/eslint-config-prettier/-/eslint-config-prettier-6.11.0.tgz#5e944e94240df9c1ba755c3b1ebc3879d96ab991"
@@ -1953,9 +1958,9 @@ camel-case@^4.1.2:
     tslib "^2.0.3"
 
 caniuse-lite@^1.0.30001312:
-  version "1.0.30001423"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001423.tgz"
-  integrity sha512-09iwWGOlifvE1XuHokFMP7eR38a0JnajoyL3/i87c8ZjRWRrdKo1fqjNfugfBD0UDBIOz0U+jtNhJ0EPm1VleQ==
+  version "1.0.30001516"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001516.tgz"
+  integrity sha512-Wmec9pCBY8CWbmI4HsjBeQLqDTqV91nFVR83DnZpYyRnPI1wePDsTg0bGLPC5VU/3OIZV1fmxEea1b+tFKe86g==
 
 chalk@^2.0.0:
   version "2.4.2"
