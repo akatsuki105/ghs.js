@@ -85,14 +85,7 @@ export const PaletteViewer: React.FC = React.memo(() => {
 
         <Spacer h="4" />
 
-        {pal && (
-          <Palette
-            id="pal-viewer"
-            className="scale-150 transform-gpu translate-x-[64px] translate-y-6"
-            colors={pal}
-            width={16}
-          />
-        )}
+        {pal && <Palette id="pal-viewer" colors={pal} width={16} />}
       </Box>
     </Center>
   );
