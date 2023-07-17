@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Flex,
+  Select,
   Slider,
   SliderFilledTrack,
   SliderTrack,
@@ -10,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import { TileViewer, Palette, ROMInfo, ImageInfo, ImageInfoProps } from './components';
 import { BinaryContext } from './contexts/Binary';
 import {
@@ -61,7 +61,7 @@ export const LZ77: React.FC = React.memo(() => {
       <Spacer h="4" />
 
       <Flex>
-        <StyledDiv className="flex flex-col border">
+        <VStack maxH="600px" overflowY="scroll">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
               <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -144,7 +144,7 @@ export const LZ77: React.FC = React.memo(() => {
               </div>
             </div>
           </div>
-        </StyledDiv>
+        </VStack>
 
         <Spacer h="6" />
 
@@ -186,24 +186,23 @@ export const LZ77: React.FC = React.memo(() => {
           <Spacer h="4" />
           {palettes.map((p, i) => {
             return (
-              <>
-                <div
-                  onClick={() => {
-                    if (!!rom.data) {
-                      setPal(i);
-                      const decompressed = decompressLZ77(rom.data, info?.addr || 0);
-                      const rgb =
-                        bpp === 4
-                          ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
-                          : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
-                      setRgb(rgb);
-                    }
-                  }}
-                >
-                  <Palette id={`pal${i}`} colors={p} />
-                </div>
-                <Spacer h="4" />
-              </>
+              <Box
+                key={i}
+                mb="4"
+                onClick={() => {
+                  if (!!rom.data) {
+                    setPal(i);
+                    const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                    const rgb =
+                      bpp === 4
+                        ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
+                        : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
+                    setRgb(rgb);
+                  }
+                }}
+              >
+                <Palette id={`pal${i}`} colors={p} />
+              </Box>
             );
           })}
         </Box>
@@ -212,9 +211,7 @@ export const LZ77: React.FC = React.memo(() => {
 
         <Box>
           <ROMInfo title={rom.name} />
-          <Spacer h="4" />
-          <Divider />
-          <Spacer h="4" />
+          <Divider my="4" />
           <ImageInfo
             addr={info?.addr || 0}
             compressedSize={info?.compressedSize || 0}
@@ -226,29 +223,17 @@ export const LZ77: React.FC = React.memo(() => {
   );
 });
 
-const StyledDiv = styled.div`
-  max-height: 600px;
-  overflow-y: scroll;
-`;
-
-const Selector: React.VFC<{ onChange: (v: string) => void }> = React.memo(({ onChange }) => {
+const Selector: React.FC<{ onChange: (v: string) => void }> = React.memo(({ onChange }) => {
   return (
-    <div>
-      <label htmlFor="location" className="form-label">
-        Bpp
-      </label>
-      <select
-        id="location"
-        name="location"
-        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-        onChange={(e) => {
-          const val = e.target.value;
-          onChange(val);
-        }}
-      >
-        <option selected>4Bpp</option>
-        {/* <option>8Bpp</option> */}
-      </select>
-    </div>
+    <Select
+      placeholder="Select Bpp"
+      onChange={(e) => {
+        const val = e.target.value;
+        onChange(val);
+      }}
+    >
+      <option value="4bpp">4Bpp</option>
+      {/* <option value="8bpp">8Bpp</option> */}
+    </Select>
   );
 });
