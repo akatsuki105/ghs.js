@@ -11,7 +11,6 @@ import { Header } from './components';
 import { BinaryProvider } from './contexts/Binary';
 import theme from './theme';
 import { APP_NAME } from './utils';
-import './tailwind.css';
 
 const App: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
-import { Center } from '@chakra-ui/react';
+import { Box, Center } from '@chakra-ui/react';
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Uploader } from './components';
+import { Upload } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { APP_NAME } from './utils';
 
@@ -17,11 +17,14 @@ export const Top: React.FC = React.memo(() => {
 
   return (
     <Center>
-      <Uploader
-        upload={(title: string, data: Uint8Array) => {
-          rom.setBinary(title, data);
-        }}
-      />
+      <Box w="66%" h="50vh">
+        <Upload
+          id="rom-upload"
+          load={(title: string, data: Uint8Array) => {
+            rom.setBinary(title, data);
+          }}
+        />
+      </Box>
     </Center>
   );
 });
