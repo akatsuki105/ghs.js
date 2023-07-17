@@ -25,6 +25,10 @@ export const TileViewer: React.VFC<Props> = React.memo(
     const dim = [w / 8, Math.ceil(visibleHeight / gridSize)]; // how many tiles are visible
     const [scroll, setScroll] = useState<[number, number]>([-1, -1]);
 
+    const canvasBuffer = document.createElement('canvas');
+    canvasBuffer.width = canvasWidth;
+    canvasBuffer.height = visibleHeight;
+
     useEffect(() => {
       if (jumpTo === -1) {
         return;
@@ -38,17 +42,16 @@ export const TileViewer: React.VFC<Props> = React.memo(
       // startで指定したタイルからキャンバスで見える分までをcanvasに描画
       const refreshCanvas = () => {
         if (!canvas || !canvas.current) return;
-        const ctx = canvas.current.getContext('2d', { alpha: false, desynchronized: true })!;
-        const [w, h] = [canvas.current.width, canvas.current.height];
-        ctx.clearRect(0, 0, w, visibleHeight);
+        const ctx = canvasBuffer.getContext('2d', { alpha: false, desynchronized: true })!;
+        ctx.clearRect(0, 0, canvas.current.width, visibleHeight);
         ctx.fillRect(0, 0, canvasWidth, visibleHeight);
 
         const c: RGB = [0x4f, 0x4f, 0x4f];
         const [startX, startY] = [start[0], start[1]];
+        const tile = ctx.createImageData(gridSize, gridSize);
         for (let y = 0; y < dim[1]; y++) {
           for (let x = 0; x < dim[0]; x++) {
             const [tileX, tileY] = [startX + x, startY + y];
-            const tile = ctx.createImageData(gridSize, gridSize);
             const tileIdx = tileY * dim[0] + tileX;
             const ofs = tileIdx * 64;
             const data = rgb.slice(ofs, ofs + 64); // 8x8
@@ -60,13 +63,16 @@ export const TileViewer: React.VFC<Props> = React.memo(
 
         if (grid) {
           const c: RGB = [0x0f, 0x0f, 0x0f];
-          const img = ctx.getImageData(0, 0, w, h);
+          const img = ctx.getImageData(0, 0, canvas.current.width, visibleHeight);
           writeBorder(img, c);
-          for (let y = 0; y < h; y++) {
-            setRGB(img, w, w - 1, y, c);
+          for (let y = 0; y < visibleHeight; y++) {
+            setRGB(img, canvas.current.width, canvas.current.width - 1, y, c);
           }
           ctx.putImageData(img, 0, 0);
         }
+        canvas.current
+          .getContext('2d', { alpha: false, desynchronized: true })!
+          .drawImage(canvasBuffer, 0, 0);
       };
       refreshCanvas();
     }, [rgb, w, h, scale, start[0], start[1]]); // eslint-disable-line
@@ -87,6 +93,7 @@ export const TileViewer: React.VFC<Props> = React.memo(
         onScroll={_onScroll}
         ref={canvas}
         className={className}
+        wait={30}
         scx={scroll[0]}
         scy={scroll[1]}
       />
