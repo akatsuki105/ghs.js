@@ -19,13 +19,14 @@ import { useWindowDimensions } from './hooks';
 import { APP_NAME, convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
 
 const ROM = 0x0800_0000 as const;
+const DEFAULT_WIDTH = 16;
 
 export const Bpp: React.FC = React.memo(() => {
   const rom = useContext(BinaryContext);
   const navigate = useNavigate();
 
   const [rgb, setRgb] = useState<RGB[]>([]);
-  const [width, _] = useState<number>(16);
+  const [width, _] = useState<number>(DEFAULT_WIDTH);
   const { height } = useWindowDimensions();
   const [addr, setAddr] = useState<number>(0);
   const [jumpTo, setJumpTo] = useState<number>(-1);
@@ -39,7 +40,7 @@ export const Bpp: React.FC = React.memo(() => {
   };
 
   useEffect(() => {
-    if (!!rom.data) {
+    if (!!rom.data && rgb.length === 0) {
       const romRgb = convert4BppToRGB(rom.data, rgb555(palettes[0]));
       setRgb(romRgb);
     } else {
@@ -75,7 +76,11 @@ export const Bpp: React.FC = React.memo(() => {
         <Box>
           <Box>{`Address: 0x${toHex(ROM + addr, 8)}`}</Box>
           <Spacer h="4" />
-          <Slider aria-label="slider-ex-2" defaultValue={16} onChange={(val) => console.log(val)}>
+          <Slider
+            aria-label="slider-ex-2"
+            defaultValue={DEFAULT_WIDTH}
+            onChange={(val) => console.log(val)}
+          >
             <SliderTrack>
               <SliderFilledTrack />
             </SliderTrack>

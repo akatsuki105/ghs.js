@@ -2,12 +2,17 @@ export type RGB = [number, number, number];
 
 export const convert4BppToRGB = (bpp: Uint8Array, pal: Uint16Array): RGB[] => {
   let ofs = 0;
-  const result: RGB[] = [];
+  const result: RGB[] = new Array(bpp.length * 2);
   while (true) {
-    if (ofs >= bpp.length) return result;
+    if (ofs >= bpp.length) {
+      return result;
+    }
 
-    const data = bpp[ofs++];
-    result.push(...convert1ByteToRGB(data, pal));
+    const data = bpp[ofs];
+    const [lo, hi] = convert1ByteToRGB(data, pal);
+    result[ofs * 2] = lo;
+    result[ofs * 2 + 1] = hi;
+    ofs++;
   }
 };
 
