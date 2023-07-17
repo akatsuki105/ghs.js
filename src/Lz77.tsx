@@ -7,6 +7,13 @@ import {
   SliderFilledTrack,
   SliderTrack,
   Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
   VStack,
 } from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
@@ -61,90 +68,48 @@ export const LZ77: React.FC = React.memo(() => {
       <Spacer h="4" />
 
       <Flex gap={4}>
-        <VStack maxH="600px" overflowY="scroll">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Address
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Compressed size
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Decompressed size
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((r, i) => {
-                      return (
-                        <tr
-                          className={
-                            r[0] === info?.addr || 0
-                              ? 'bg-blue-100'
-                              : (i & 1) === 1
-                              ? 'bg-gray-100'
-                              : 'bg-white'
-                          }
-                          key={r[0].toString()}
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            0x{(r[0] + 0x08000000).toString(16)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {r[1]} Bytes
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {r[2]} Bytes
-                          </td>
-                          <td
-                            className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer"
-                            onClick={() => {
-                              setInfo({
-                                addr: r[0],
-                                compressedSize: r[1],
-                                decompressedSize: r[2],
-                              });
-                              const pal555 = rgb555(palettes[pal]);
-                              const [decompressed] = decompressLZ77(rom.data!, r[0]);
-                              // const [decompressed] = decompressRLE(rom.data, r[0]);
-                              const buf =
-                                bpp === 4
-                                  ? convert4BppToRGB(decompressed, pal555)
-                                  : convert8BppToRGB(decompressed, pal555);
-                              setRgb(buf);
-                            }}
-                          >
-                            View
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </VStack>
+        <TableContainer maxH="600px" overflowY="scroll">
+          <Table variant="striped" size="sm">
+            <Thead>
+              <Tr>
+                <Th>Address</Th>
+                <Th>Compressed size</Th>
+                <Th>Decompressed size</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {rows.map((r) => {
+                return (
+                  <Tr key={r[0].toString()}>
+                    <Td>0x{(r[0] + 0x08000000).toString(16)}</Td>
+                    <Td>{r[1]} Bytes</Td>
+                    <Td>{r[2]} Bytes</Td>
+                    <Td
+                      onClick={() => {
+                        setInfo({
+                          addr: r[0],
+                          compressedSize: r[1],
+                          decompressedSize: r[2],
+                        });
+                        const pal555 = rgb555(palettes[pal]);
+                        const [decompressed] = decompressLZ77(rom.data!, r[0]);
+                        // const [decompressed] = decompressRLE(rom.data, r[0]);
+                        const buf =
+                          bpp === 4
+                            ? convert4BppToRGB(decompressed, pal555)
+                            : convert8BppToRGB(decompressed, pal555);
+                        setRgb(buf);
+                      }}
+                    >
+                      View
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
 
         <Box>
           Width
