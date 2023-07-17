@@ -1,3 +1,4 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -38,11 +39,13 @@ const App: React.FC = () => {
 
 const Providers: React.FC = React.memo(({ children }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <BinaryProvider>
-        <BrowserRouter>{children}</BrowserRouter>
-      </BinaryProvider>
-    </ThemeProvider>
+    <ChakraProvider>
+      <ThemeProvider theme={theme}>
+        <BinaryProvider>
+          <BrowserRouter>{children}</BrowserRouter>
+        </BinaryProvider>
+      </ThemeProvider>
+    </ChakraProvider>
   );
 });
 
