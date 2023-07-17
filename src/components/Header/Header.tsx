@@ -1,73 +1,46 @@
+import { Box, Flex, Heading, Spacer } from '@chakra-ui/react';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BinaryContext } from '../../contexts/Binary';
 import { APP_NAME } from '../../utils';
-import { Spacer } from '../atoms';
 
 export const Header: React.FC = React.memo(() => {
   const rom = useContext(BinaryContext);
   const navigate = useNavigate();
 
   return (
-    <div className="flex">
-      <Spacer axis="horizontal" size="md" />
+    <Flex minWidth="max-content" alignItems="center" px="4">
+      <Box px={2}>
+        <Heading
+          as="h1"
+          size="md"
+          onClick={() => {
+            rom.setBinary();
+            navigate(`/${APP_NAME}/top`);
+          }}
+        >
+          {APP_NAME}
+        </Heading>
+      </Box>
 
-      <h1
-        className="text-lg w-1/6 cursor-pointer"
-        onClick={() => {
-          rom.setBinary();
-          navigate(`/${APP_NAME}/top`);
-        }}
-      >
-        {APP_NAME}
-      </h1>
-
-      <div className="w-5/6"></div>
+      <Spacer />
 
       {!!rom.data && (
-        <div className="flex justify-items-end">
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              navigate(`/${APP_NAME}/info`);
-            }}
-          >
+        <Flex gap="8">
+          <Box onClick={() => navigate(`/${APP_NAME}/info`)} cursor="pointer">
             Info
-          </div>
-
-          <Spacer axis="horizontal" size="md" />
-
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              navigate(`/${APP_NAME}/bpp`);
-            }}
-          >
+          </Box>
+          <Box onClick={() => navigate(`/${APP_NAME}/bpp`)} cursor="pointer">
             4Bpp
-          </div>
-
-          <Spacer axis="horizontal" size="md" />
-
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              navigate(`/${APP_NAME}/lz77`);
-            }}
-          >
+          </Box>
+          <Box onClick={() => navigate(`/${APP_NAME}/lz77`)} cursor="pointer">
             LZ77
-          </div>
-          <Spacer axis="horizontal" size="md" />
-          <div
-            className="cursor-pointer"
-            onClick={() => {
-              navigate(`/${APP_NAME}/pal`);
-            }}
-          >
+          </Box>
+          <Box onClick={() => navigate(`/${APP_NAME}/pal`)} cursor="pointer">
             Palette
-          </div>
-          <Spacer axis="horizontal" size="md" />
-        </div>
+          </Box>
+        </Flex>
       )}
-    </div>
+    </Flex>
   );
 });
