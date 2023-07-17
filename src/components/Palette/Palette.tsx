@@ -4,10 +4,9 @@ type Props = {
   id: string;
   colors: number[]; // uint32(rgb888) array
   width?: number;
-  className?: string;
 };
 
-export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16, className }) => {
+export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16 }) => {
   const row = Math.ceil(colors.length / width);
 
   useEffect(() => {
@@ -36,5 +35,5 @@ export const Palette: React.VFC<Props> = React.memo(({ id, colors, width = 16, c
     });
   });
 
-  return <canvas id={id} width={width * 16} height={row * 16} className={className}></canvas>;
+  return <canvas id={id} width={width * 16} height={row * 16}></canvas>;
 });

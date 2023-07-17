@@ -1,27 +1,25 @@
+import { Box, ChakraProvider, Divider, Spacer } from '@chakra-ui/react';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
 import { Bpp } from './Bpp';
 import { Info } from './Info';
 import { LZ77 } from './Lz77';
 import { PaletteViewer } from './Palette';
 import { Top } from './Top';
-import { Separator, Spacer, Header } from './components';
+import { Header } from './components';
 import { BinaryProvider } from './contexts/Binary';
-import theme from './theme';
 import { APP_NAME } from './utils';
-import './tailwind.css';
 
 const App: React.FC = () => {
   return (
     <Providers>
-      <div className="App">
-        <Spacer axis="vertical" size="sm" />
+      <Box className="App">
+        <Spacer h="4" />
         <Header />
 
-        <Spacer size="sm" />
-        <Separator />
-        <Spacer size="sm" />
+        <Spacer h="4" />
+        <Divider />
+        <Spacer h="4" />
 
         <Routes>
           <Route path={`/${APP_NAME}/top`} element={<Top />} />
@@ -31,18 +29,18 @@ const App: React.FC = () => {
           <Route path={`/${APP_NAME}/pal`} element={<PaletteViewer />} />
           <Route path="*" element={<Navigate to={`/${APP_NAME}/top`} replace />} />
         </Routes>
-      </div>
+      </Box>
     </Providers>
   );
 };
 
 const Providers: React.FC = React.memo(({ children }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <ChakraProvider>
       <BinaryProvider>
         <BrowserRouter>{children}</BrowserRouter>
       </BinaryProvider>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 });
 

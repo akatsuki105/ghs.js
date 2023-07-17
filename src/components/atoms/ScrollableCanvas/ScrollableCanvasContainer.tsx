@@ -1,18 +1,25 @@
 import { throttle } from 'lodash-es';
-import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
+import React, { PropsWithChildren, useEffect, useRef } from 'react';
 
-const ScrollContainer = styled.div<{ width: number; height: number }>`
-  width: ${({ width }) => width}px;
-  height: ${({ height }) => height}px;
-  overflow: auto;
-  overflow-y: scroll;
-`;
-
-const StyledDiv = styled.div`
-  position: relative;
-  outline: none;
-`;
+const ScrollContainer = React.forwardRef<
+  HTMLDivElement,
+  PropsWithChildren<{ width: number; height: number; className?: string }>
+>(({ width, height, className, children }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        width: `${width}px`,
+        height: `${height}px`,
+        overflow: 'auto',
+        overflowY: 'scroll',
+      }}
+    >
+      {children}
+    </div>
+  );
+});
 
 type Props = {
   width: number;
@@ -78,7 +85,7 @@ export const ScrollableCanvasContainer: React.VFC<Props> = React.memo(
     return (
       <ScrollContainer width={width} height={height} ref={ref} className={className}>
         <div style={{ overflow: 'hidden', width: largeWidth, height: largeHeight }}>
-          <StyledDiv>{children}</StyledDiv>
+          <div style={{ position: 'relative', outline: 'none' }}>{children}</div>
         </div>
       </ScrollContainer>
     );

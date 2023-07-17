@@ -1,7 +1,19 @@
-import * as Slider from '@radix-ui/react-slider';
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Input,
+  Slider,
+  SliderFilledTrack,
+  SliderTrack,
+  Spacer,
+  Text,
+} from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Separator, Spacer, Box, TileViewer, Button, Center } from './components';
+import { TileViewer } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { useWindowDimensions } from './hooks';
 import { APP_NAME, convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
@@ -37,10 +49,11 @@ export const Bpp: React.FC = React.memo(() => {
 
   return (
     <Center>
-      <div className="flex w-full">
-        <div className="w-1/2">
+      <Flex w="100%">
+        <Box w="50%">
           {rgb.length > 0 ? (
-            <div className="flex justify-center">
+            <Flex alignItems="center">
+              <Spacer />
               <TileViewer
                 w={width * 8}
                 h={canvasHeight}
@@ -50,37 +63,25 @@ export const Bpp: React.FC = React.memo(() => {
                 jumpTo={jumpTo}
                 grid
               />
-            </div>
+              <Spacer />
+            </Flex>
           ) : (
             <Box height={canvasHeight} />
           )}
-        </div>
+        </Box>
 
-        <Spacer size="sm" />
-        <Separator axis="vertical" stretch />
-        <Spacer size="sm" />
+        <Divider orientation="vertical" />
 
-        <div className="w-1/8">
-          <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
-          <Spacer size="sm" />
-          <form>
-            <Slider.Root
-              className="SliderRoot"
-              defaultValue={[16]}
-              max={32}
-              min={16}
-              step={1}
-              aria-label="Volume"
-              onChange={(e) => console.log(e.currentTarget)}
-            >
-              <Slider.Track className="SliderTrack">
-                <Slider.Range className="SliderRange" />
-              </Slider.Track>
-              <Slider.Thumb className="SliderThumb" />
-            </Slider.Root>
-          </form>
+        <Box>
+          <Box>{`Address: 0x${toHex(ROM + addr, 8)}`}</Box>
+          <Spacer h="4" />
+          <Slider aria-label="slider-ex-2" defaultValue={16} onChange={(val) => console.log(val)}>
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+          </Slider>
 
-          <Spacer size="lg" />
+          <Spacer h="8" />
           <Button
             onClick={() => {
               const newAddr = addr - width * 32;
@@ -92,7 +93,7 @@ export const Bpp: React.FC = React.memo(() => {
           >
             ↑
           </Button>
-          <Spacer size="sm" />
+          <Spacer h="4" />
           <Button
             onClick={() => {
               const newAddr = addr + width * 32;
@@ -105,22 +106,20 @@ export const Bpp: React.FC = React.memo(() => {
             ↓
           </Button>
 
-          <Spacer size="md" />
+          <Spacer h="6" />
 
-          <div>
-            <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
-              Jump to address
-            </label>
+          <Box>
+            <Text>Jump to address</Text>
             <JumpTo
               jumpTo={(addr) => {
                 setJumpTo(addr);
                 setAddr(addr - ROM);
               }}
             />
-          </div>
-        </div>
-        <div className="w-3/8"></div>
-      </div>
+          </Box>
+        </Box>
+        <Spacer />
+      </Flex>
     </Center>
   );
 });
@@ -145,16 +144,8 @@ const JumpTo: React.FC<{ jumpTo: (addr: number) => void }> = React.memo(({ jumpT
   };
 
   return (
-    <div className="mt-1">
-      <input
-        type="text"
-        name="jump"
-        id="jump"
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        placeholder="0x08000000"
-        ref={ref}
-        onKeyDown={onKeyDown}
-      />
-    </div>
+    <Box mt="1">
+      <Input name="jump" id="jump" placeholder="0x08000000" ref={ref} onKeyDown={onKeyDown} />
+    </Box>
   );
 });

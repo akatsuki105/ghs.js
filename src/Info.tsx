@@ -1,8 +1,8 @@
+import { Box, Center, Heading, Input, Spacer, Text } from '@chakra-ui/react';
 import md5 from 'js-md5';
 import sha1 from 'js-sha1';
 import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Center, Spacer } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { APP_NAME } from './utils';
 
@@ -28,79 +28,66 @@ export const Info: React.FC = React.memo(() => {
   const sha1Hash = sha1.create().update(rom.data).hex();
 
   return (
-    <Center className="max-w-screen-lg mx-auto">
-      <div className="w-1/2">
-        <p className="text-3xl">ROM Info</p>
+    <Center>
+      <Box w="50%">
+        <Heading size="lg">ROM Info</Heading>
 
-        <Spacer />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Filename:</span>
-          <Input className="w-full" value={rom.name} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Filename:</Text>
+          <Input value={rom.name} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Size:</span>
-          <Input value={`${rom.data.byteLength} Bytes`} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Size:</Text>
+          <Input value={`${rom.data.byteLength} Bytes`} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Game Title:</span>
-          <Input value={title} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Game Title:</Text>
+          <Input value={title} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Game Code:</span>
-          <Input value={gamecode} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Game Code:</Text>
+          <Input value={gamecode} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Maker Code:</span>
-          <Input value={maker} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Maker Code:</Text>
+          <Input value={maker} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Software Version:</span>
-          <Input value={`v1.${version.toString()}`} />
-        </div>
+        <Box>
+          <Text fontSize="sm">Software Version:</Text>
+          <Input value={`v1.${version.toString()}`} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">MD5 Hash:</span>
-          <Input value={md5Hash} />
-        </div>
+        <Box>
+          <Text fontSize="sm">MD5 Hash:</Text>
+          <Input value={md5Hash} isReadOnly />
+        </Box>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">SHA1 Hash:</span>
-          <Input value={sha1Hash} />
-        </div>
-      </div>
+        <Box>
+          <Text fontSize="sm">SHA1 Hash:</Text>
+          <Input value={sha1Hash} isReadOnly />
+        </Box>
+      </Box>
     </Center>
   );
 });
-
-const Input: React.FC<{ value: string; className?: string }> = ({ value, className }) => {
-  return (
-    <input
-      type="text"
-      name="filename"
-      id="filename"
-      className={`block w-full rounded-md border-gray-300 shadow-sm sm:text-sm ${className}`}
-      value={value}
-      disabled
-    />
-  );
-};

@@ -1,18 +1,24 @@
-import * as Slider from '@radix-ui/react-slider';
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
 import {
-  Separator,
-  Spacer,
-  TileViewer,
-  Palette,
   Box,
-  ROMInfo,
-  ImageInfo,
-  ImageInfoProps,
-  Center,
-} from './components';
+  Divider,
+  Flex,
+  Select,
+  Slider,
+  SliderFilledTrack,
+  SliderTrack,
+  Spacer,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  VStack,
+} from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { TileViewer, Palette, ROMInfo, ImageInfo, ImageInfoProps } from './components';
 import { BinaryContext } from './contexts/Binary';
 import {
   APP_NAME,
@@ -50,131 +56,73 @@ export const LZ77: React.FC = React.memo(() => {
   if (!rom.name) return <></>;
 
   return (
-    <Center>
+    <VStack>
       {rgb.length > 0 ? (
         <TileViewer w={width * 8} h={304} rgb={rgb} scale={4} grid />
       ) : (
-        <Box height={304} />
+        <Box h="304px" />
       )}
 
-      <Spacer size="sm" />
-      <Separator />
-      <Spacer size="sm" />
+      <Spacer h="4" />
+      <Divider />
+      <Spacer h="4" />
 
-      <div className="flex">
-        <StyledDiv className="flex flex-col border">
-          <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-            <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-              <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Address
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Compressed size
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Decompressed size
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {rows.map((r, i) => {
-                      return (
-                        <tr
-                          className={
-                            r[0] === info?.addr || 0
-                              ? 'bg-blue-100'
-                              : (i & 1) === 1
-                              ? 'bg-gray-100'
-                              : 'bg-white'
-                          }
-                          key={r[0].toString()}
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            0x{(r[0] + 0x08000000).toString(16)}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {r[1]} Bytes
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                            {r[2]} Bytes
-                          </td>
-                          <td
-                            className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 cursor-pointer"
-                            onClick={() => {
-                              setInfo({
-                                addr: r[0],
-                                compressedSize: r[1],
-                                decompressedSize: r[2],
-                              });
-                              const pal555 = rgb555(palettes[pal]);
-                              const [decompressed] = decompressLZ77(rom.data!, r[0]);
-                              // const [decompressed] = decompressRLE(rom.data, r[0]);
-                              const buf =
-                                bpp === 4
-                                  ? convert4BppToRGB(decompressed, pal555)
-                                  : convert8BppToRGB(decompressed, pal555);
-                              setRgb(buf);
-                            }}
-                          >
-                            View
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </StyledDiv>
+      <Flex gap={4}>
+        <TableContainer maxH="600px" overflowY="scroll">
+          <Table variant="striped" size="sm">
+            <Thead>
+              <Tr>
+                <Th>Address</Th>
+                <Th>Compressed size</Th>
+                <Th>Decompressed size</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {rows.map((r) => {
+                return (
+                  <Tr key={r[0].toString()}>
+                    <Td>0x{(r[0] + 0x08000000).toString(16)}</Td>
+                    <Td>{r[1]} Bytes</Td>
+                    <Td>{r[2]} Bytes</Td>
+                    <Td
+                      onClick={() => {
+                        setInfo({
+                          addr: r[0],
+                          compressedSize: r[1],
+                          decompressedSize: r[2],
+                        });
+                        const pal555 = rgb555(palettes[pal]);
+                        const [decompressed] = decompressLZ77(rom.data!, r[0]);
+                        // const [decompressed] = decompressRLE(rom.data, r[0]);
+                        const buf =
+                          bpp === 4
+                            ? convert4BppToRGB(decompressed, pal555)
+                            : convert8BppToRGB(decompressed, pal555);
+                        setRgb(buf);
+                      }}
+                    >
+                      View
+                    </Td>
+                  </Tr>
+                );
+              })}
+            </Tbody>
+          </Table>
+        </TableContainer>
 
-        <Spacer size="md" />
-
-        <div>
+        <Box>
           Width
-          <Spacer size="sm" />
-          <div className="flex">
-            <form
-              className="w-full"
-              onChange={(e: ChangeEvent<HTMLFormElement>) => setWidth(Number(e.target.value))}
-            >
-              <Slider.Root
-                className="relative flex items-center select-none touch-none w-full h-[20px]"
-                defaultValue={[2]}
-                max={64}
-                min={2}
-                step={1}
-                aria-label="Volume"
-              >
-                <Slider.Track className="bg-gray-300 relative grow rounded-[9999px] h-[3px]">
-                  <Slider.Range className="absolute bg-purple-600 rounded-[9999px] h-full" />
-                </Slider.Track>
-                <Slider.Thumb className="block bg-gray-100 w-[20px] h-[20px] rounded-xl shadow hover:bg-purple-300 focus:outline-none" />
-              </Slider.Root>
-            </form>
-            <Spacer size="sm" />
-            <div>{width}</div>
-          </div>
-          <Spacer size="sm" />
+          <Spacer h="4" />
+          <Flex gap="2">
+            <Slider aria-label="slider-ex-2" defaultValue={2} onChange={(val) => setWidth(val)}>
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+            </Slider>
+            <Box>{width}</Box>
+          </Flex>
+          <Spacer h="4" />
           <Selector
             onChange={(val: string) => {
               if (!!rom.data) {
@@ -196,74 +144,59 @@ export const LZ77: React.FC = React.memo(() => {
               }
             }}
           />
-          <Spacer size="sm" />
+          <Spacer h="4" />
           Palette
-          <Spacer size="sm" />
+          <Spacer h="4" />
           {palettes.map((p, i) => {
             return (
-              <>
-                <div
-                  onClick={() => {
-                    if (!!rom.data) {
-                      setPal(i);
-                      const decompressed = decompressLZ77(rom.data, info?.addr || 0);
-                      const rgb =
-                        bpp === 4
-                          ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
-                          : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
-                      setRgb(rgb);
-                    }
-                  }}
-                >
-                  <Palette id={`pal${i}`} colors={p} />
-                </div>
-                <Spacer size="sm" />
-              </>
+              <Box
+                key={i}
+                mb="4"
+                onClick={() => {
+                  if (!!rom.data) {
+                    setPal(i);
+                    const decompressed = decompressLZ77(rom.data, info?.addr || 0);
+                    const rgb =
+                      bpp === 4
+                        ? convert4BppToRGB(decompressed[0], rgb555(palettes[i]))
+                        : convert8BppToRGB(decompressed[0], rgb555(palettes[i]));
+                    setRgb(rgb);
+                  }
+                }}
+              >
+                <Palette id={`pal${i}`} colors={p} />
+              </Box>
             );
           })}
-        </div>
+        </Box>
 
-        <Spacer size="md" />
+        <Spacer h="6" />
 
-        <div>
+        <Box>
           <ROMInfo title={rom.name} />
-          <Spacer size="sm" />
-          <Separator />
-          <Spacer size="sm" />
+          <Divider my="4" />
           <ImageInfo
             addr={info?.addr || 0}
             compressedSize={info?.compressedSize || 0}
             decompressedSize={info?.decompressedSize || 0}
           />
-        </div>
-      </div>
-    </Center>
+        </Box>
+      </Flex>
+    </VStack>
   );
 });
 
-const StyledDiv = styled.div`
-  max-height: 600px;
-  overflow-y: scroll;
-`;
-
-const Selector: React.VFC<{ onChange: (v: string) => void }> = React.memo(({ onChange }) => {
+const Selector: React.FC<{ onChange: (v: string) => void }> = React.memo(({ onChange }) => {
   return (
-    <div>
-      <label htmlFor="location" className="form-label">
-        Bpp
-      </label>
-      <select
-        id="location"
-        name="location"
-        className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-        onChange={(e) => {
-          const val = e.target.value;
-          onChange(val);
-        }}
-      >
-        <option selected>4Bpp</option>
-        {/* <option>8Bpp</option> */}
-      </select>
-    </div>
+    <Select
+      placeholder="Select Bpp"
+      onChange={(e) => {
+        const val = e.target.value;
+        onChange(val);
+      }}
+    >
+      <option value="4bpp">4Bpp</option>
+      {/* <option value="8bpp">8Bpp</option> */}
+    </Select>
   );
 });
