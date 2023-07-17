@@ -1,6 +1,16 @@
+import {
+  Box,
+  Button,
+  Center,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Spacer,
+} from '@chakra-ui/react';
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Center, Spacer, Palette, Button } from './components';
+import { Palette } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { APP_NAME, loadU16, rgb555To888 } from './utils';
 
@@ -40,44 +50,40 @@ export const PaletteViewer: React.FC = React.memo(() => {
   }
 
   return (
-    <Center className="max-w-screen-lg mx-auto">
-      <div className="w-1/2">
-        <p className="text-3xl">Palette Viewer</p>
+    <Center>
+      <Box w="50%">
+        <Heading size="lg">Palette Viewer</Heading>
 
-        <Spacer />
+        <Spacer h="6" />
 
-        <div>
-          <span className="text-sm">Address:</span>
-          <input
-            type="text"
-            className="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+        <FormControl>
+          <FormLabel>Address:</FormLabel>
+          <Input
             placeholder="0x08000000"
             value={addr}
             onChange={(e) => {
               setAddr(e.currentTarget.value);
             }}
           />
-        </div>
+        </FormControl>
 
-        <Spacer size="sm" />
+        <Spacer h="4" />
 
-        <div>
-          <span className="text-sm">Palette Length:</span>
-          <input
-            type="text"
-            className="block w-full rounded-md border-gray-300 shadow-sm sm:text-sm"
+        <FormControl>
+          <FormLabel>Palette Length:</FormLabel>
+          <Input
             value={length}
             onChange={(e) => {
               setLen(e.currentTarget.value);
             }}
           />
-        </div>
+        </FormControl>
 
-        <Spacer size="md" />
+        <Spacer h="4" />
 
         <Button onClick={viewPalette}>View</Button>
 
-        <Spacer size="md" />
+        <Spacer h="4" />
 
         {pal && (
           <Palette
@@ -87,7 +93,7 @@ export const PaletteViewer: React.FC = React.memo(() => {
             width={16}
           />
         )}
-      </div>
+      </Box>
     </Center>
   );
 });
