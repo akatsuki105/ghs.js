@@ -4,6 +4,7 @@ import {
   Center,
   Divider,
   Flex,
+  Input,
   Slider,
   SliderFilledTrack,
   SliderTrack,
@@ -143,16 +144,8 @@ const JumpTo: React.FC<{ jumpTo: (addr: number) => void }> = React.memo(({ jumpT
   };
 
   return (
-    <div className="mt-1">
-      <input
-        type="text"
-        name="jump"
-        id="jump"
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-        placeholder="0x08000000"
-        ref={ref}
-        onKeyDown={onKeyDown}
-      />
-    </div>
+    <Box mt="1">
+      <Input name="jump" id="jump" placeholder="0x08000000" ref={ref} onKeyDown={onKeyDown} />
+    </Box>
   );
 });
