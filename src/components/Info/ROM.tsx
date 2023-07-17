@@ -1,3 +1,4 @@
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -8,7 +9,9 @@ type Props = {
 export const ROMInfo: React.VFC<Props> = React.memo(({ title }) => {
   return (
     <Container>
-      <div className="text-lg font-medium">ROM Info</div>
+      <Text fontSize="md" fontWeight="medium">
+        ROM Info
+      </Text>
       <StyledDiv>Title: {title}</StyledDiv>
     </Container>
   );

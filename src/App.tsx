@@ -1,4 +1,4 @@
-import { ChakraProvider, Divider, Spacer } from '@chakra-ui/react';
+import { Box, ChakraProvider, Divider, Spacer } from '@chakra-ui/react';
 import React from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -16,7 +16,7 @@ import './tailwind.css';
 const App: React.FC = () => {
   return (
     <Providers>
-      <div className="App">
+      <Box className="App">
         <Spacer h="4" />
         <Header />
 
@@ -32,7 +32,7 @@ const App: React.FC = () => {
           <Route path={`/${APP_NAME}/pal`} element={<PaletteViewer />} />
           <Route path="*" element={<Navigate to={`/${APP_NAME}/top`} replace />} />
         </Routes>
-      </div>
+      </Box>
     </Providers>
   );
 };
