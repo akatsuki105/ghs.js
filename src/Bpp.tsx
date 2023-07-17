@@ -1,5 +1,15 @@
-import { Box, Button, Center, Divider, Flex, Spacer } from '@chakra-ui/react';
-import * as Slider from '@radix-ui/react-slider';
+import {
+  Box,
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Slider,
+  SliderFilledTrack,
+  SliderTrack,
+  Spacer,
+  Text,
+} from '@chakra-ui/react';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TileViewer } from './components';
@@ -64,22 +74,11 @@ export const Bpp: React.FC = React.memo(() => {
         <Box>
           <Box>{`Address: 0x${toHex(ROM + addr, 8)}`}</Box>
           <Spacer h="4" />
-          <form>
-            <Slider.Root
-              className="SliderRoot"
-              defaultValue={[16]}
-              max={32}
-              min={16}
-              step={1}
-              aria-label="Volume"
-              onChange={(e) => console.log(e.currentTarget)}
-            >
-              <Slider.Track className="SliderTrack">
-                <Slider.Range className="SliderRange" />
-              </Slider.Track>
-              <Slider.Thumb className="SliderThumb" />
-            </Slider.Root>
-          </form>
+          <Slider aria-label="slider-ex-2" defaultValue={16} onChange={(val) => console.log(val)}>
+            <SliderTrack>
+              <SliderFilledTrack />
+            </SliderTrack>
+          </Slider>
 
           <Spacer h="8" />
           <Button
@@ -109,9 +108,7 @@ export const Bpp: React.FC = React.memo(() => {
           <Spacer h="6" />
 
           <Box>
-            <label htmlFor="jump" className="block text-sm font-medium text-gray-700">
-              Jump to address
-            </label>
+            <Text>Jump to address</Text>
             <JumpTo
               jumpTo={(addr) => {
                 setJumpTo(addr);
