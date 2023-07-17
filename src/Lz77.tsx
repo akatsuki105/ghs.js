@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import * as Slider from '@radix-ui/react-slider';
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import {
   Separator,
   Spacer,
   TileViewer,
-  Slider,
   Palette,
   Box,
   ROMInfo,
@@ -150,7 +150,30 @@ export const LZ77: React.FC = React.memo(() => {
         <Spacer size="md" />
 
         <div>
-          <Slider label="Width" max={64} min={2} onChange={setWidth} />
+          Width
+          <Spacer size="sm" />
+          <div className="flex">
+            <form
+              className="w-full"
+              onChange={(e: ChangeEvent<HTMLFormElement>) => setWidth(Number(e.target.value))}
+            >
+              <Slider.Root
+                className="relative flex items-center select-none touch-none w-full h-[20px]"
+                defaultValue={[2]}
+                max={64}
+                min={2}
+                step={1}
+                aria-label="Volume"
+              >
+                <Slider.Track className="bg-gray-300 relative grow rounded-[9999px] h-[3px]">
+                  <Slider.Range className="absolute bg-purple-600 rounded-[9999px] h-full" />
+                </Slider.Track>
+                <Slider.Thumb className="block bg-gray-100 w-[20px] h-[20px] rounded-xl shadow hover:bg-purple-300 focus:outline-none" />
+              </Slider.Root>
+            </form>
+            <Spacer size="sm" />
+            <div>{width}</div>
+          </div>
           <Spacer size="sm" />
           <Selector
             onChange={(val: string) => {

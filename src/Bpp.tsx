@@ -1,6 +1,7 @@
+import * as Slider from '@radix-ui/react-slider';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Separator, Spacer, Box, TileViewer, Slider, Button, Center } from './components';
+import { Separator, Spacer, Box, TileViewer, Button, Center } from './components';
 import { BinaryContext } from './contexts/Binary';
 import { useWindowDimensions } from './hooks';
 import { APP_NAME, convert4BppToRGB, palettes, RGB, rgb555, toHex } from './utils';
@@ -12,7 +13,7 @@ export const Bpp: React.FC = React.memo(() => {
   const navigate = useNavigate();
 
   const [rgb, setRgb] = useState<RGB[]>([]);
-  const [width, setWidth] = useState<number>(16);
+  const [width, _] = useState<number>(16);
   const { height } = useWindowDimensions();
   const [addr, setAddr] = useState<number>(0);
   const [jumpTo, setJumpTo] = useState<number>(-1);
@@ -62,7 +63,22 @@ export const Bpp: React.FC = React.memo(() => {
         <div className="w-1/8">
           <div>{`Address: 0x${toHex(ROM + addr, 8)}`}</div>
           <Spacer size="sm" />
-          <Slider label="Width" max={32} min={16} onChange={setWidth} />
+          <form>
+            <Slider.Root
+              className="SliderRoot"
+              defaultValue={[16]}
+              max={32}
+              min={16}
+              step={1}
+              aria-label="Volume"
+              onChange={(e) => console.log(e.currentTarget)}
+            >
+              <Slider.Track className="SliderTrack">
+                <Slider.Range className="SliderRange" />
+              </Slider.Track>
+              <Slider.Thumb className="SliderThumb" />
+            </Slider.Root>
+          </form>
 
           <Spacer size="lg" />
           <Button
