@@ -1,6 +1,5 @@
-import { Text } from '@chakra-ui/react';
-import React from 'react';
-import styled from 'styled-components';
+import { Box, Text } from '@chakra-ui/react';
+import React, { PropsWithChildren } from 'react';
 
 export type ImageInfoProps = {
   addr: number;
@@ -11,24 +10,22 @@ export type ImageInfoProps = {
 export const ImageInfo: React.VFC<ImageInfoProps> = React.memo(
   ({ addr, compressedSize, decompressedSize }) => {
     return (
-      <Container>
+      <Box w="240px">
         <Text fontSize="md" fontWeight="medium">
           Image Info
         </Text>
         <StyledDiv>Addr: 0x{(addr + 0x08000000).toString(16)}</StyledDiv>
         <StyledDiv>Compressed Size: {compressedSize.toString(10)}</StyledDiv>
         <StyledDiv>Decompressed Size: {decompressedSize.toString(10)}</StyledDiv>
-      </Container>
+      </Box>
     );
   },
 );
 
-const Container = styled.div`
-  width: 240px;
-`;
-
-const StyledDiv = styled.div`
-  overflow-x: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`;
+const StyledDiv: React.FC<PropsWithChildren<unknown>> = ({ children }) => {
+  return (
+    <Box overflowX="hidden" whiteSpace="nowrap" textOverflow="ellipsis">
+      {children}
+    </Box>
+  );
+};
