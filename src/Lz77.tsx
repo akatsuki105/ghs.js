@@ -1,18 +1,17 @@
-import * as Slider from '@radix-ui/react-slider';
-import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
+import {
+  Box,
+  Divider,
+  Flex,
+  Slider,
+  SliderFilledTrack,
+  SliderTrack,
+  Spacer,
+  VStack,
+} from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import {
-  Separator,
-  Spacer,
-  TileViewer,
-  Palette,
-  Box,
-  ROMInfo,
-  ImageInfo,
-  ImageInfoProps,
-  Center,
-} from './components';
+import { TileViewer, Palette, ROMInfo, ImageInfo, ImageInfoProps } from './components';
 import { BinaryContext } from './contexts/Binary';
 import {
   APP_NAME,
@@ -50,18 +49,18 @@ export const LZ77: React.FC = React.memo(() => {
   if (!rom.name) return <></>;
 
   return (
-    <Center>
+    <VStack>
       {rgb.length > 0 ? (
         <TileViewer w={width * 8} h={304} rgb={rgb} scale={4} grid />
       ) : (
-        <Box height={304} />
+        <Box h="304px" />
       )}
 
-      <Spacer size="sm" />
-      <Separator />
-      <Spacer size="sm" />
+      <Spacer h="4" />
+      <Divider />
+      <Spacer h="4" />
 
-      <div className="flex">
+      <Flex>
         <StyledDiv className="flex flex-col border">
           <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -147,34 +146,20 @@ export const LZ77: React.FC = React.memo(() => {
           </div>
         </StyledDiv>
 
-        <Spacer size="md" />
+        <Spacer h="6" />
 
-        <div>
+        <Box>
           Width
-          <Spacer size="sm" />
-          <div className="flex">
-            <form
-              className="w-full"
-              onChange={(e: ChangeEvent<HTMLFormElement>) => setWidth(Number(e.target.value))}
-            >
-              <Slider.Root
-                className="relative flex items-center select-none touch-none w-full h-[20px]"
-                defaultValue={[2]}
-                max={64}
-                min={2}
-                step={1}
-                aria-label="Volume"
-              >
-                <Slider.Track className="bg-gray-300 relative grow rounded-[9999px] h-[3px]">
-                  <Slider.Range className="absolute bg-purple-600 rounded-[9999px] h-full" />
-                </Slider.Track>
-                <Slider.Thumb className="block bg-gray-100 w-[20px] h-[20px] rounded-xl shadow hover:bg-purple-300 focus:outline-none" />
-              </Slider.Root>
-            </form>
-            <Spacer size="sm" />
-            <div>{width}</div>
-          </div>
-          <Spacer size="sm" />
+          <Spacer h="4" />
+          <Flex gap="2">
+            <Slider aria-label="slider-ex-2" defaultValue={2} onChange={(val) => setWidth(val)}>
+              <SliderTrack>
+                <SliderFilledTrack />
+              </SliderTrack>
+            </Slider>
+            <Box>{width}</Box>
+          </Flex>
+          <Spacer h="4" />
           <Selector
             onChange={(val: string) => {
               if (!!rom.data) {
@@ -196,9 +181,9 @@ export const LZ77: React.FC = React.memo(() => {
               }
             }}
           />
-          <Spacer size="sm" />
+          <Spacer h="4" />
           Palette
-          <Spacer size="sm" />
+          <Spacer h="4" />
           {palettes.map((p, i) => {
             return (
               <>
@@ -217,27 +202,27 @@ export const LZ77: React.FC = React.memo(() => {
                 >
                   <Palette id={`pal${i}`} colors={p} />
                 </div>
-                <Spacer size="sm" />
+                <Spacer h="4" />
               </>
             );
           })}
-        </div>
+        </Box>
 
-        <Spacer size="md" />
+        <Spacer h="6" />
 
-        <div>
+        <Box>
           <ROMInfo title={rom.name} />
-          <Spacer size="sm" />
-          <Separator />
-          <Spacer size="sm" />
+          <Spacer h="4" />
+          <Divider />
+          <Spacer h="4" />
           <ImageInfo
             addr={info?.addr || 0}
             compressedSize={info?.compressedSize || 0}
             decompressedSize={info?.decompressedSize || 0}
           />
-        </div>
-      </div>
-    </Center>
+        </Box>
+      </Flex>
+    </VStack>
   );
 });
 
